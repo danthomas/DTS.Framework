@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTS.Utilities", "DTS.Utilities\DTS.Utilities.csproj", "{035F77B5-6AA2-47B3-9759-C448468E2F42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTS.SqlServer.DataAccess", "DTS.SqlServer.DataAccess\DTS.SqlServer.DataAccess.csproj", "{578997B1-0B07-45E1-96C7-750FECAA85DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTS.Framework.Tests", "DTS.Framework.Tests\DTS.Framework.Tests.csproj", "{1ACF171B-941A-4D27-85E9-91403C770541}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{035F77B5-6AA2-47B3-9759-C448468E2F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{035F77B5-6AA2-47B3-9759-C448468E2F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{035F77B5-6AA2-47B3-9759-C448468E2F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578997B1-0B07-45E1-96C7-750FECAA85DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578997B1-0B07-45E1-96C7-750FECAA85DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578997B1-0B07-45E1-96C7-750FECAA85DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578997B1-0B07-45E1-96C7-750FECAA85DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ACF171B-941A-4D27-85E9-91403C770541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ACF171B-941A-4D27-85E9-91403C770541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ACF171B-941A-4D27-85E9-91403C770541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ACF171B-941A-4D27-85E9-91403C770541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
