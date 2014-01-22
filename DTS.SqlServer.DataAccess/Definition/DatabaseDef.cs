@@ -15,6 +15,10 @@ namespace DTS.SqlServer.DataAccess.Definition
 
         public List<ObjectDef> ObjectDefs { get; set; }
 
+        public void Populate(string server, string database)
+        {
+        }
+
         public void Populate(DataSet dataSet)
         {
             SchemaDefs = new List<SchemaDef>();

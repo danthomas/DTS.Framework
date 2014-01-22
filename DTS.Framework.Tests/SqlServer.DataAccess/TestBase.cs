@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Xml.Linq;
 using DTS.SqlServer.DataAccess.Definition;
@@ -9,8 +7,11 @@ using DTS.Utilities;
 
 namespace DTS.Framework.Tests.SqlServer.DataAccess
 {
-    public class TestBase
+    public class TestBase : SqlServerConnection
     {
+        private const string LocalServerName = ".\\sql2012";
+        private const string TestDatabaseName = "DTS.SqlServer.DataAccess.Tests";
+
         protected static DatabaseDef CreateDatabaseDef(string document)
         {
             DataSet dataSet = CreateDataDetFromDocument(document);
@@ -31,34 +32,38 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
             dataSet.Tables[0].Rows.Add(new object[] { 3, "customers" });
             dataSet.Tables[0].Rows.Add(new object[] { 4, "projects" });
 
-            dataSet.Tables[1].Rows.Add(new object[] { 1, 2, "Role" });
-            dataSet.Tables[1].Rows.Add(new object[] { 2, 2, "User" });
-            dataSet.Tables[1].Rows.Add(new object[] { 3, 3, "Customer" });
-            dataSet.Tables[1].Rows.Add(new object[] { 4, 4, "Project" });
-            dataSet.Tables[1].Rows.Add(new object[] { 5, 4, "Task" });
-            dataSet.Tables[1].Rows.Add(new object[] { 6, 1, "TaskType" });
+            dataSet.Tables[0].Rows.Add(new object[] { 1, "int" });
+            dataSet.Tables[0].Rows.Add(new object[] { 2, "varchar" });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 1, 1, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 2, 1, "Name", "varchar", 20, false, false, null });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 3, 2, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 4, 2, "Name", "varchar", 20, false, false, null });
+            dataSet.Tables[2].Rows.Add(new object[] { 1, 2, "Role" });
+            dataSet.Tables[2].Rows.Add(new object[] { 2, 2, "User" });
+            dataSet.Tables[2].Rows.Add(new object[] { 3, 3, "Customer" });
+            dataSet.Tables[2].Rows.Add(new object[] { 4, 4, "Project" });
+            dataSet.Tables[2].Rows.Add(new object[] { 5, 4, "Task" });
+            dataSet.Tables[2].Rows.Add(new object[] { 6, 1, "TaskType" });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 5, 3, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 6, 3, "Name", "varchar", 20, false, false, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 1, 1, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 2, 1, "Name", 2, 20, false, false, null });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 7, 4, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 8, 4, "CustomerId", "int", null, false, false, 3 });
-            dataSet.Tables[2].Rows.Add(new object[] { 9, 4, "Name", "varchar", 20, false, false, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 3, 2, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 4, 2, "Name", 2, 20, false, false, null });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 10, 5, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 11, 5, "ProjectId", "int", null, false, false, 4 });
-            dataSet.Tables[2].Rows.Add(new object[] { 12, 5, "UserId", "int", null, false, false, 2 });
-            dataSet.Tables[2].Rows.Add(new object[] { 12, 5, "TaskTypeId", "int", null, false, false, 6 });
-            dataSet.Tables[2].Rows.Add(new object[] { 13, 5, "Description", "varchar", 20, false, false, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 5, 3, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 6, 3, "Name", 2, 20, false, false, null });
 
-            dataSet.Tables[2].Rows.Add(new object[] { 14, 6, "Id", "int", null, false, true, null });
-            dataSet.Tables[2].Rows.Add(new object[] { 15, 6, "Name", "varchar", 20, false, false, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 7, 4, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 8, 4, "CustomerId", 1, null, false, false, 3 });
+            dataSet.Tables[3].Rows.Add(new object[] { 9, 4, "Name", 2, 20, false, false, null });
+
+            dataSet.Tables[3].Rows.Add(new object[] { 10, 5, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 11, 5, "ProjectId", 1, null, false, false, 4 });
+            dataSet.Tables[3].Rows.Add(new object[] { 12, 5, "UserId", 1, null, false, false, 2 });
+            dataSet.Tables[3].Rows.Add(new object[] { 12, 5, "TaskTypeId", 1, null, false, false, 6 });
+            dataSet.Tables[3].Rows.Add(new object[] { 13, 5, "Description", 2, 20, false, false, null });
+
+            dataSet.Tables[3].Rows.Add(new object[] { 14, 6, "Id", 1, null, false, true, null });
+            dataSet.Tables[3].Rows.Add(new object[] { 15, 6, "Name", 2, 20, false, false, null });
 
             DatabaseDef databaseDef = new DatabaseDef();
 
@@ -76,9 +81,10 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
             dataSet.DataSetName = xDocument.Root.Attribute("name").Value;
 
             int schemaId = 0;
+            int typeId = 0;
             int objectId = 0;
             int columnId = 0;
-
+            
             foreach (XElement schemaElement in xDocument.Root.Elements("schema"))
             {
                 dataSet.Tables[0].Rows.Add(new object[]
@@ -86,52 +92,63 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
                         ++schemaId,
                         schemaElement.Attribute("name").Value
                     });
+            }
 
-                foreach (XElement objectElement in schemaElement.Elements("object"))
+            foreach (XElement typeElement in xDocument.Root.Elements("type"))
+            {
+                dataSet.Tables[1].Rows.Add(new object[]
                 {
-                    dataSet.Tables[1].Rows.Add(new object[]
+                    ++typeId,
+                    typeElement.Attribute("name").Value
+                });
+            }
+
+            foreach (XElement objectElement in xDocument.Root.Elements("object"))
+            {
+                schemaId = (int)dataSet.Tables[0].Select(String.Format("name = '{0}'", objectElement.Attribute("schema").Value))[0][0];
+
+                dataSet.Tables[2].Rows.Add(new object[]
                         {
                             ++objectId,
                             schemaId,
                             objectElement.Attribute("name").Value
                         });
-                }
             }
-
-            foreach (XElement schemaElement in xDocument.Root.Elements("schema"))
+            
+            foreach (XElement objectElement in xDocument.Root.Elements("object"))
             {
-                foreach (XElement objectElement in schemaElement.Elements("object"))
+                objectId = (int)dataSet.Tables[2].Select(String.Format("name = '{0}'", objectElement.Attribute("name").Value))[0][0];
+              
+                foreach (XElement columnElement in objectElement.Elements("column"))
                 {
-                    objectId = (int)dataSet.Tables[1].Select(String.Format("name = '{0}'", objectElement.Attribute("name").Value))[0][0];
+                    typeId = (int)dataSet.Tables[1].Select(String.Format("name = '{0}'", columnElement.Attribute("type").Value))[0][0];
 
-                    foreach (XElement columnElement in objectElement.Elements("column"))
+                    bool isPrimaryKey = columnElement.Attribute("isPrimaryKey") != null && Boolean.Parse(columnElement.Attribute("isPrimaryKey").Value);
+
+                    int? referencedObjectId = null;
+
+                    if (columnElement.Attribute("referencedObject") != null)
                     {
-                        bool isPrimaryKey = columnElement.Attribute("isPrimaryKey") != null && Boolean.Parse(columnElement.Attribute("isPrimaryKey").Value);
+                        referencedObjectId = (int)dataSet.Tables[2].Select(String.Format("name = '{0}'", columnElement.Attribute("referencedObject").Value))[0][0];
+                    }
 
-                        int? referencedObjectId = null;
+                    int? length = columnElement.Attribute("length") != null ? new int?(Int32.Parse(columnElement.Attribute("length").Value)) : null;
 
-                        if (columnElement.Attribute("referencedObject") != null)
-                        {
-                            referencedObjectId = (int)dataSet.Tables[1].Select(String.Format("name = '{0}'", columnElement.Attribute("referencedObject").Value))[0][0];
-                        }
+                    bool nullable = columnElement.Attribute("nullable") != null && Boolean.Parse(columnElement.Attribute("nullable").Value);
 
-                        int? length = columnElement.Attribute("length") != null ? new int?(Int32.Parse(columnElement.Attribute("length").Value)) : null;
-
-                        bool nullable = columnElement.Attribute("nullable") != null && Boolean.Parse(columnElement.Attribute("nullable").Value);
-
-                        dataSet.Tables[2].Rows.Add(new object[]
+                    dataSet.Tables[3].Rows.Add(new object[]
                             {
                                 ++columnId,
                                 objectId,
                                 columnElement.Attribute("name").Value,
-                                columnElement.Attribute("type").Value,
+                                typeId,
                                 length,
                                 nullable,   
                                 isPrimaryKey,
                                 referencedObjectId
                             });
-                    }
                 }
+
             }
             return dataSet;
         }
@@ -143,14 +160,20 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
             DataTable schemaTable = new DataTable();
             dataSet.Tables.Add(schemaTable);
 
-            schemaTable.Columns.Add("FormatExId", typeof(Int32));
+            schemaTable.Columns.Add("SchemaId", typeof(Int32));
             schemaTable.Columns.Add("Name", typeof(String));
+
+            DataTable typeTable = new DataTable();
+            dataSet.Tables.Add(typeTable);
+
+            typeTable.Columns.Add("TypeId", typeof(Int32));
+            typeTable.Columns.Add("Name", typeof(String));
 
             DataTable objectTable = new DataTable();
             dataSet.Tables.Add(objectTable);
 
             objectTable.Columns.Add("ObjectId", typeof(Int32));
-            objectTable.Columns.Add("FormatExId", typeof(Int32));
+            objectTable.Columns.Add("SchemaId", typeof(Int32));
             objectTable.Columns.Add("Name", typeof(String));
 
             DataTable columnTable = new DataTable();
@@ -159,7 +182,7 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
             columnTable.Columns.Add("ColumnId", typeof(Int32));
             columnTable.Columns.Add("ObjectId", typeof(Int32));
             columnTable.Columns.Add("Name", typeof(String));
-            columnTable.Columns.Add("Type", typeof(String));
+            columnTable.Columns.Add("TypeId", typeof(Int32));
             columnTable.Columns.Add("Length", typeof(Int16));
             columnTable.Columns.Add("Nullable", typeof(Boolean));
             columnTable.Columns.Add("IsPrimaryKey", typeof(Boolean));
@@ -213,22 +236,22 @@ values(";
 
             }
 
-            ExecuteNonQuery(sql);
+            Execute(TestDatabaseName, sql);
         }
 
         protected static DatabaseDef CreateDatabase(string document)
         {
             DatabaseDef databaseDef = CreateDatabaseDef(document);
 
-            ExecuteNonQuery(@"
-IF EXISTS (SELECT * FROM sys.databases WHERE name = 'DTS.DataAccess.Tests')
+            Execute("master", @"
+IF EXISTS (SELECT * FROM sys.databases WHERE name = '{0}')
 BEGIN
-    ALTER DATABASE [DTS.DataAccess.Tests] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE [DTS.DataAccess.Tests]
-END;", "master");
+    ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [{0}]
+END;", TestDatabaseName);
 
-            ExecuteNonQuery(@"
-CREATE DATABASE [DTS.DataAccess.Tests]", "master");
+            Execute("master", @"
+CREATE DATABASE [{0}]", TestDatabaseName);
 
             string sql = @"";
 
@@ -275,49 +298,15 @@ CREATE TABLE [{0}].[{1}]
 )";
             }
 
-            ExecuteNonQuery(sql);
+            Execute(TestDatabaseName, sql);
 
             return databaseDef;
         }
 
-        private static void ExecuteNonQuery(string sql, string database = null)
+        private static void Execute(string datbase, string format, params object[] args)
         {
-            SqlConnectionStringBuilder connectionStringBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-
-            if (database != null)
-            {
-                connectionStringBuilder.InitialCatalog = database;
-            }
-
-            using (SqlConnection connection = new SqlConnection(connectionStringBuilder.ConnectionString))
-            {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
+            ExecuteNonQuery(LocalServerName, datbase, format, args);
         }
-
-        //        private void ExecuteDataSet(string database, string sql)
-        //        {
-        //            SqlConnectionStringBuilder connectionStringBuilder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)
-        //            {
-        //                InitialCatalog = database
-        //            };
-        //
-        //            using (SqlConnection connection = new SqlConnection(connectionStringBuilder.ConnectionString))
-        //            {
-        //                connection.Open();
-        //
-        //                using (SqlCommand command = new SqlCommand(sql, connection))
-        //                {
-        //                    command.ExecuteNonQuery();
-        //                }
-        //            }
-        //        }
-
     }
 
     public class Customer

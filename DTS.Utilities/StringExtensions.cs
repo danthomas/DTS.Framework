@@ -8,5 +8,14 @@ namespace DTS.Utilities
         {
             return String.Format(thisString, args);
         }
+
+        public static string PadTo(this string thisString, int length)
+        {
+            thisString = thisString ?? "";
+
+            return thisString.Length < length
+                    ? thisString.PadRight(length)
+                    : thisString;
+        }
     }
 }
