@@ -2,21 +2,7 @@
 
 namespace DTS.SqlServer.DataAccess
 {
-    [Flags]
-    internal enum ColumnIdentiferType
-    {
-        Schema = 1,
-        Object = 2,
-        Name = 4,
-        Alias = 8,
-        ObjectName = Object | Name,
-        SchemaObjectName = Schema | Object | Name,
-        NameAlias = Name | Alias,
-        ObjectNameAlias = Object | Name | Alias,
-        SchemaObjectNameAlias = Schema | Object | Name | Alias
-    }
-
-    internal class ColumnIdentifier : Identifier
+    public class ColumnIdentifier : Identifier
     {
         internal ColumnIdentifier(string identifier)
             : base(identifier)

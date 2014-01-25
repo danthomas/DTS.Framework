@@ -3,7 +3,7 @@
 namespace DTS.SqlServer.DataAccess
 {
     [Flags]
-    internal enum ObjectIdentiferType
+    public enum ObjectIdentiferType
     {
         Schema = 1,
         Name = 2,
@@ -13,7 +13,7 @@ namespace DTS.SqlServer.DataAccess
         SchemaNameAlias = Schema | Name | Alias
     }
 
-    internal class ObjectIdentifier : Identifier
+    public class ObjectIdentifier : Identifier
     {
         internal ObjectIdentifier(string identifier)
             : base(identifier)

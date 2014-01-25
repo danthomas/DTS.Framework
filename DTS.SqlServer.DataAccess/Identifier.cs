@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DTS.SqlServer.DataAccess
 {
-    abstract internal class Identifier
+    public class Identifier
     {
         private readonly string _identifier;
 
@@ -86,11 +86,6 @@ namespace DTS.SqlServer.DataAccess
         public override string ToString()
         {
             return _identifier;
-        }
-
-        protected string MakeSafe(string value)
-        {
-            return String.Format("[{0}]", value);
         }
     }
 }

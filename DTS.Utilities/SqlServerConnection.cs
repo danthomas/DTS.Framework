@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DTS.Utilities
@@ -7,7 +8,7 @@ namespace DTS.Utilities
     {
         private readonly string _server;
         private readonly string _database;
-        
+
         public SqlServerConnection()
         { }
 
@@ -24,16 +25,34 @@ namespace DTS.Utilities
 
         public static void ExecuteNonQuery(string server, string database, string format, params object[] args)
         {
-            ExecuteInConnection(server, database, (connection) =>
+            ExecuteInConnection((connection, cmdText) =>
             {
-                using (SqlCommand command = new SqlCommand(format.FormatEx(args), connection))
+                using (SqlCommand command = new SqlCommand(cmdText, connection))
                 {
                     command.ExecuteNonQuery();
                 }
-            });
+            }, server, database, format, args);
         }
 
-        private static void ExecuteInConnection(string server, string database, Action<SqlConnection> action)
+        public static DataSet ExecuteDataSet(string server, string database, string format, params object[] args)
+        {
+            DataSet dataSet = new DataSet();
+
+            ExecuteInConnection((connection, cmdText) =>
+            {
+                using (SqlCommand command = new SqlCommand(cmdText, connection))
+                {
+                    using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+                    {
+                        dataAdapter.Fill(dataSet);
+                    }
+                }
+            }, server, database, format, args);
+
+            return dataSet;
+        }
+
+        private static void ExecuteInConnection(Action<SqlConnection, string> action, string server, string database, string format, params object[] args)
         {
             SqlConnectionStringBuilder connectionStringBuilder = new SqlConnectionStringBuilder { DataSource = server, InitialCatalog = database, IntegratedSecurity = true };
 
@@ -41,7 +60,12 @@ namespace DTS.Utilities
             {
                 connection.Open();
 
-                action(connection);
+                string script = format.FormatEx(args);
+
+                foreach (string cmdText in script.Split(new[] { "GO" + Environment.NewLine, Environment.NewLine + "GO" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    action(connection, cmdText);
+                }
             }
         }
     }

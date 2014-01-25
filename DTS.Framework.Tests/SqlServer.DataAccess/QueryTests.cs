@@ -17,7 +17,11 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
             _databaseDef = CreateDatabase(@"
 <database name='DTS.SqlServer.DataAccess.Tests'>
     
-    <schema name='testing' />
+    <schema name='static' />
+    <schema name='security' />
+    <schema name='projects' />
+    <schema name='customers' />
+    <schema name='tasks' />
 
     <type name='bigint' />
     <type name='binary' />
@@ -54,21 +58,31 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
     <type name='varchar' />
     <type name='xml' />
 
-    <object name='TaskType' schema='testing'>
+    <object name='TaskType' schema='static'>
         <column name='TaskTypeId' isPrimaryKey='true' type='tinyint' />
         <column name='TaskTypeName' type='varchar' length='30' />
     </object>
-    <object name='TaskTimeType' schema='testing'>
+    <object name='TaskTimeType' schema='static'>
         <column name='TaskTimeTypeId' isPrimaryKey='true' type='tinyint' />
         <column name='TaskTimeTypeName' type='varchar' length='30' />
     </object>
-    <object name='User' schema='testing'>
+    <object name='User' schema='security'>
         <column name='UserId' isPrimaryKey='true' type='smallint' />
         <column name='UserName' type='varchar' length='50' />
     </object>
-    <object name='Task' schema='testing'>
+    <object name='Customer' schema='customers'>
+        <column name='CustomerId' isPrimaryKey='true' type='smallint' />
+        <column name='CustomerName' type='varchar' length='50' />
+    </object>
+    <object name='Project' schema='projects'>
+        <column name='ProjectId' isPrimaryKey='true' type='smallint' />
+        <column name='CustomerId' type='smallint' referencedObject='Customer' />
+        <column name='ProjectName' type='varchar' length='50' />
+    </object>
+    <object name='Task' schema='tasks'>
         <column name='TaskId' isPrimaryKey='true' type='int' />
         <column name='TaskTypeId' type='tinyint' referencedObject='TaskType' />
+        <column name='ProjectId' type='smallint' referencedObject='Project' />
         <column name='CreatorUserId' type='smallint' referencedObject='User' />
         <column name='OwnerUserId' type='smallint' referencedObject='User' nullable='true' />
         <column name='DeveloperUserId' type='smallint' referencedObject='User' nullable='true' />
@@ -78,7 +92,7 @@ namespace DTS.Framework.Tests.SqlServer.DataAccess
         <column name='DateTimeCreated' type='datetime'/>
         <column name='DateTimeCompleted' type='datetime' nullable='true' />
     </object>
-    <object name='TaskTime' schema='testing'>
+    <object name='TaskTime' schema='tasks'>
         <column name='TaskTimeId' isPrimaryKey='true' type='bigint' />
         <column name='TaskTimeTypeId' type='tinyint' />
         <column name='TaskId' type='int' referencedObject='Task' />

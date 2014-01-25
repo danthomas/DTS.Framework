@@ -258,12 +258,14 @@ CREATE DATABASE [{0}]", TestDatabaseName);
             foreach (SchemaDef schemaDef in databaseDef.SchemaDefs)
             {
                 sql += String.Format(@"
+GO
 CREATE SCHEMA [{0}]", schemaDef.Name);
             }
 
             foreach (ObjectDef objectDef in databaseDef.ObjectDefs)
             {
                 sql += String.Format(@"
+GO
 CREATE TABLE [{0}].[{1}]
 (", objectDef.SchemaDef.Name, objectDef.Name);
 

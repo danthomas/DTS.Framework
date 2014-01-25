@@ -2,8 +2,6 @@
 {
     public class TypeDef
     {
-        private string _name;
-
         public TypeDef(int typeId, string name)
         {
             TypeId = typeId;
@@ -12,10 +10,6 @@
 
         public int TypeId { get; set; }
 
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public string Name { get; set; }
     }
 }
