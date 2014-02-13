@@ -4,78 +4,78 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DTS.Framework.Tests.SqlServer.DataAccess
 {
     [TestClass]
-    public class ColumnIdentifierTests
+    public class SelectColumnIdentifierTests
     {
         [TestMethod]
         public void Construct_StringName()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[Name]");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[Name]");
 
             Assert.AreEqual("", identifier.Schema);
             Assert.AreEqual("", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.Name, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.Name, identifier.IdentiferType);
         }
 
         [TestMethod]
         public void Construct_StringNameAndAlias()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[Name] UserName");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[Name] UserName");
 
             Assert.AreEqual("", identifier.Schema);
             Assert.AreEqual("", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("UserName", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.NameAlias, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.NameAlias, identifier.IdentiferType);
         }
 
         [TestMethod]
         public void Construct_StringObjectAndName()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[User].[Name]");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[User].[Name]");
 
             Assert.AreEqual("", identifier.Schema);
             Assert.AreEqual("User", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.ObjectName, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.ObjectName, identifier.IdentiferType);
         }
 
         [TestMethod]
         public void Construct_StringObjectNameAndAlias()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[User].[Name] UserName");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[User].[Name] UserName");
 
             Assert.AreEqual("", identifier.Schema);
             Assert.AreEqual("User", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("UserName", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.ObjectNameAlias, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.ObjectNameAlias, identifier.IdentiferType);
         }
 
         [TestMethod]
         public void Construct_StringSchemaObjectAndName()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[security].[User].Name");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[security].[User].Name");
 
             Assert.AreEqual("security", identifier.Schema);
             Assert.AreEqual("User", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.SchemaObjectName, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.SchemaObjectName, identifier.IdentiferType);
         }
 
         [TestMethod]
         public void Construct_StringSchemaObjectNameAndAlias()
         {
-            ColumnIdentifier identifier = new ColumnIdentifier("[security].[User].Name UserName");
+            SelectColumnIdentifier identifier = new SelectColumnIdentifier("[security].[User].Name UserName");
 
             Assert.AreEqual("security", identifier.Schema);
             Assert.AreEqual("User", identifier.Object);
             Assert.AreEqual("Name", identifier.Name);
             Assert.AreEqual("UserName", identifier.Alias);
-            Assert.AreEqual(ColumnIdentiferType.SchemaObjectNameAlias, identifier.ColumnIdentiferType);
+            Assert.AreEqual(SelectColumnIdentiferType.SchemaObjectNameAlias, identifier.IdentiferType);
         }
     }
 }

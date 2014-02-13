@@ -4,13 +4,13 @@ namespace DTS.SqlServer.DataAccess
 {
     public class QueryColumn
     {
-        public QueryColumn(ColumnIdentifier columnIdentifier, bool isSelect, bool isWhere, bool isVisible)
+        public QueryColumn(SelectColumnIdentifier selectColumnIdentifier, bool isSelect, bool isWhere, bool isVisible)
         {
-            ColumnIdentifier = columnIdentifier;
+            SelectColumnIdentifier = selectColumnIdentifier;
             IsSelect = isSelect;
             IsWhere = isWhere;
             IsVisible = isVisible;
-            Alias = columnIdentifier.Alias;
+            Alias = selectColumnIdentifier.Alias;
         }
 
         public QueryColumn(Join join, ColumnDef columnDef)
@@ -22,7 +22,7 @@ namespace DTS.SqlServer.DataAccess
             Alias = "";
         }
 
-        public ColumnIdentifier ColumnIdentifier { get; set; }
+        public SelectColumnIdentifier SelectColumnIdentifier { get; set; }
         public Join Join { get; set; }
         public ColumnDef ColumnDef { get; set; }
         public string Alias { get; private set; }

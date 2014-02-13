@@ -148,5 +148,22 @@ left join	(
 
             return stringBuilder.ToString();
         }
+
+        public ObjectDef GetObject(string text)
+        {
+            ObjectDef objectDef = null;
+
+            ObjectIdentifier objectIdentifier = new ObjectIdentifier(text);
+
+            List<ObjectDef> objectDefs = ObjectDefs.Where(item => (item.SchemaDef.Name == objectIdentifier.Name || objectIdentifier.Schema == "")
+                    && item.SchemaDef.Name == objectIdentifier.Name).ToList();
+            
+            if (objectDefs.Count == 1)
+            {
+                objectDef = objectDefs[0];
+            }
+
+            return objectDef;
+        }
     }
 }

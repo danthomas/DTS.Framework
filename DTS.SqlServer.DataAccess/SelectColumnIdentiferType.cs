@@ -3,7 +3,7 @@
 namespace DTS.SqlServer.DataAccess
 {
     [Flags]
-    public enum ColumnIdentiferType
+    public enum SelectColumnIdentiferType
     {
         Schema = 1,
         Object = 2,

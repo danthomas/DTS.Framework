@@ -15,14 +15,50 @@ namespace DTS.SqlServer.DataAccess
             if (SetJoinObjectDefinitions()
                 && CheckAliases()
                 && SetJoinAliases()
+                && SetParentJoins()
                 && SetQueryColumnJoinsAndColumnDefs()
-                && SetColumnAliases())
+                && SetColumnAliases()
+                && _validationErrors.Count == 0)
             {
-                _selectStatement = GetSelect() + GetFrom() + GetWhere() + GetOrderBy();
-                _isDirty = false;
+
+                try
+                {
+                    _selectStatement = GetSelect() + GetFrom() + GetWhere() + GetOrderBy();
+                    _isDirty = false;
+                }
+                catch
+                {
+                }
             }
 
             return _validationErrors.Count == 0;
+        }
+
+        private bool SetParentJoins()
+        {
+            bool ret = true;
+
+            foreach (Join join in Joins.Where(item => item != Joins[0]))
+            {
+                if (join.SelectColumnIdentifier == null)
+                {
+                   JoinAndColumnDef joinAndColumnDef = GetJoinAndColumnDef(join);
+
+                    if (joinAndColumnDef != null)
+                    {
+                        join.ParentJoin = joinAndColumnDef.Join;
+                        join.ParentColumnDef = joinAndColumnDef.ColumnDef;
+                        join.ColumnDef = join.ObjectDef.ColumnDefs.Single(item => item.IsPrimaryKey);
+                    }
+                    else
+                    {
+                        ret = false;
+                        AddValidationError("Failed to find parent for '{0}'", join.SelectColumnIdentifier.Text);
+                    }
+                }
+            }
+
+            return ret;
         }
 
         internal bool SetJoinAliases()
@@ -139,7 +175,7 @@ namespace DTS.SqlServer.DataAccess
         {
             foreach (QueryColumn queryColumn in SelectColumns)
             {
-                JoinAndColumnDef joinAndColumnDef = GetSelectJoinAndColumnDef(queryColumn.ColumnIdentifier);
+                JoinAndColumnDef joinAndColumnDef = GetJoinAndColumnDef(queryColumn.SelectColumnIdentifier);
 
                 queryColumn.Join = joinAndColumnDef.Join;
                 queryColumn.ColumnDef = joinAndColumnDef.ColumnDef;
@@ -164,7 +200,7 @@ namespace DTS.SqlServer.DataAccess
                     {
                         if (Joins.All(item => item.ColumnDef != columnDef))
                         {
-                            selectColumns.Add(new QueryColumn(join, columnDef));       
+                            selectColumns.Add(new QueryColumn(join, columnDef));
                         }
                     }
                 }

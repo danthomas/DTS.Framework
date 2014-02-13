@@ -13,19 +13,36 @@ namespace DTS.SqlServer.DataAccess
         SchemaNameAlias = Schema | Name | Alias
     }
 
-    public class ObjectIdentifier : Identifier
+    public class ObjectIdentifier : IdentifierBase
     {
-        internal ObjectIdentifier(string identifier)
-            : base(identifier)
-        {
-            Schema = GetNamingToken(2);
-            Name = GetNamingToken(1);
-            Alias = GetAliasToken();
 
-            SetObjectIdentifierType(identifier);
+        internal ObjectIdentifier(string text)
+        {
+            Text = text;
         }
 
-        private void SetObjectIdentifierType(string identifier)
+        public string Text
+        {
+            get { return _text; }
+            set
+            {
+                _text = value;
+                Tokenise(_text);
+
+                SetObjectIdentifierType();
+            }
+        }
+
+        protected override void Tokenise(string _text)
+        {
+            base.Tokenise(_text);
+                Schema = GetNamingToken(2);
+                Name = GetNamingToken(1);
+                Alias = GetAliasToken();
+
+        }
+
+        private void SetObjectIdentifierType()
         {
             if (Schema != "" && Name != "" && Alias != "")
             {
@@ -45,7 +62,7 @@ namespace DTS.SqlServer.DataAccess
             }
             else
             {
-                throw new Exception(String.Format("Invalid ObjectIdentifier {0}", identifier));
+                throw new Exception(String.Format("Invalid ObjectIdentifier {0}", _text));
             }
         }
 

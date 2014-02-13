@@ -4,16 +4,16 @@ namespace DTS.SqlServer.DataAccess
 {
     public class Join
     {
-        public Join(ObjectIdentifier objectIdentifier, ColumnIdentifier columnIdentifier)
+        public Join(ObjectIdentifier objectIdentifier, SelectColumnIdentifier selectColumnIdentifier)
         {
             ObjectIdentifier = objectIdentifier;
-            ColumnIdentifier = columnIdentifier;
+            SelectColumnIdentifier = selectColumnIdentifier;
             Alias = objectIdentifier.Alias;
         }
 
         public ObjectIdentifier ObjectIdentifier { get; set; }
 
-        public ColumnIdentifier ColumnIdentifier { get; set; }
+        public SelectColumnIdentifier SelectColumnIdentifier { get; set; }
 
         public Join ParentJoin { get; set; }
 

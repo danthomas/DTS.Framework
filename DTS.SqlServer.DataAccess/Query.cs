@@ -53,49 +53,63 @@ namespace DTS.SqlServer.DataAccess
 
         public Query Select(string identifier, bool isWhere = true, bool isVisible = true)
         {
-            ColumnIdentifier columnIdentifier = new ColumnIdentifier(identifier);
+            SelectColumnIdentifier selectColumnIdentifier = new SelectColumnIdentifier(identifier);
 
-            QueryColumns.Add(new QueryColumn(columnIdentifier, true, isWhere, isVisible));
+            QueryColumns.Add(new QueryColumn(selectColumnIdentifier, true, isWhere, isVisible));
 
             _isDirty = true;
 
             return this;
 
-            //            string name = columnIdentifier.Alias == "" ? columnIdentifier.Name : columnIdentifier.Alias;
+            //            string name = SelectColumnIdentifier.Alias == "" ? SelectColumnIdentifier.Name : SelectColumnIdentifier.Alias;
             //
             //            if (SelectColumns.Any(item => (item.Alias == "" && item.ColumnDef.Name == name) || item.Alias == name))
             //            {
             //                throw new DataAccessException(DataAccessExceptionType.DuplicateSelectColumn, "SelectColumn {0} already exists.", name);
             //            }
             //
-            //            JoinAndColumnDef joinAndColumnDef = GetSelectJoinAndColumnDef(columnIdentifier);
+            //            JoinAndColumnDef joinAndColumnDef = GetJoinAndColumnDef(SelectColumnIdentifier);
             //
-            //            QueryColumns.Add(new QueryColumn(joinAndColumnDef.Join, joinAndColumnDef.ColumnDef, columnIdentifier.Alias, isWhere, true, isVisible));
+            //            QueryColumns.Add(new QueryColumn(joinAndColumnDef.Join, joinAndColumnDef.ColumnDef, SelectColumnIdentifier.Alias, isWhere, true, isVisible));
 
         }
 
-        internal JoinAndColumnDef GetSelectJoinAndColumnDef(ColumnIdentifier columnIdentifier)
+        internal JoinAndColumnDef GetJoinAndColumnDef(Join join)
+        {
+            List<JoinAndColumnDef> joinAndColumDefs = new List<JoinAndColumnDef>();
+
+            List<ColumnDef> columnDefs = Joins[0].ObjectDef.ColumnDefs.Where(item => item.ReferencedObjectDef == join.ObjectDef).ToList();
+
+            if (columnDefs.Count == 1)
+            {
+                return new JoinAndColumnDef(Joins[0], columnDefs[0]);
+            }
+            
+            return null;
+        }
+
+        internal JoinAndColumnDef GetJoinAndColumnDef(SelectColumnIdentifier selectColumnIdentifier)
         {
             /*
-             * select columns are specified as a ColumnIdentifier
+             * select columns are specified as a SelectColumnIdentifier
              * 
              * SchemaObjectName: SchemaName.ObjectName.ColumnName
              * ObjectName: ObjectName.ColumnName or ObjectAlias.ColumnName
              * or
              * Name: ColumnName
              * 
-             * Get the Join and ColumnDef from the ColumnIdentifier
+             * Get the Join and ColumnDef from the SelectColumnIdentifier
              */
 
             List<JoinAndColumnDef> joinAndColumDefs = new List<JoinAndColumnDef>();
 
-            if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.SchemaObjectName)
+            if ((selectColumnIdentifier.IdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.SchemaObjectName)
             {
                 //chemaName.ObjectName.ColumnName
-                foreach (Join j in Joins.Where(item => item.ObjectDef.SchemaDef.Name == columnIdentifier.Schema
-                    && item.ObjectDef.Name == columnIdentifier.Object))
+                foreach (Join j in Joins.Where(item => item.ObjectDef.SchemaDef.Name == selectColumnIdentifier.Schema
+                    && item.ObjectDef.Name == selectColumnIdentifier.Object))
                 {
-                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == columnIdentifier.Name);
+                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == selectColumnIdentifier.Name);
 
                     if (cd != null)
                     {
@@ -103,12 +117,12 @@ namespace DTS.SqlServer.DataAccess
                     }
                 }
             }
-            else if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.ObjectName)
+            else if ((selectColumnIdentifier.IdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.ObjectName)
             {
                 //ObjectName.ColumnName
-                foreach (Join j in Joins.Where(item => item.ObjectDef.Name == columnIdentifier.Object))
+                foreach (Join j in Joins.Where(item => item.ObjectDef.Name == selectColumnIdentifier.Object))
                 {
-                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == columnIdentifier.Name);
+                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == selectColumnIdentifier.Name);
 
                     if (cd != null)
                     {
@@ -117,9 +131,9 @@ namespace DTS.SqlServer.DataAccess
                 }
 
                 //ObjectAlias.ColumnName
-                foreach (Join j in Joins.Where(item => item.Alias == columnIdentifier.Object))
+                foreach (Join j in Joins.Where(item => item.Alias == selectColumnIdentifier.Object))
                 {
-                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == columnIdentifier.Name);
+                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == selectColumnIdentifier.Name);
 
                     if (cd != null)
                     {
@@ -127,12 +141,12 @@ namespace DTS.SqlServer.DataAccess
                     }
                 }
             }
-            else if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.Name)
+            else if ((selectColumnIdentifier.IdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.Name)
             {
                 //ColumnName
                 foreach (Join j in Joins)
                 {
-                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == columnIdentifier.Name);
+                    ColumnDef cd = j.ObjectDef.ColumnDefs.SingleOrDefault(item => item.Name == selectColumnIdentifier.Name);
 
                     if (cd != null)
                     {
@@ -150,7 +164,7 @@ namespace DTS.SqlServer.DataAccess
 
             }
 
-            throw new Exception(String.Format("Unable to identify Column '{0}'", columnIdentifier));
+            throw new Exception(String.Format("Unable to identify Column '{0}'", selectColumnIdentifier));
         }
 
         internal class JoinAndColumnDef
@@ -175,7 +189,7 @@ namespace DTS.SqlServer.DataAccess
 
             return this;
 
-            //            ObjectDef objectDef = GetObjectDef(objectIdentifier);
+            //            ObjectDef objectDef = GetObjectDef(ObjectIdentifier);
             //
             //
             //            //No column specified so join to the root object column that refences the specified object
@@ -195,39 +209,39 @@ namespace DTS.SqlServer.DataAccess
             //                throw new Exception(String.Format("Failed to identify root object column to join to {0} with", @object));
             //            }
             //
-            //            Join(parentJoin, parentColumnDefs[0], objectDef, columnDef, objectIdentifier);
+            //            Join(parentJoin, parentColumnDefs[0], objectDef, columnDef, ObjectIdentifier);
         }
 
         public Query Join(string @object, string column)
         {
             ObjectIdentifier objectIdentifier = new ObjectIdentifier(@object);
 
-            ColumnIdentifier columnIdentifier = new ColumnIdentifier(column);
+            SelectColumnIdentifier selectColumnIdentifier = new SelectColumnIdentifier(column);
 
-            Joins.Add(new Join(objectIdentifier, columnIdentifier));
+            Joins.Add(new Join(objectIdentifier, selectColumnIdentifier));
 
             _isDirty = true;
 
             return this;
             //
-            //            ObjectDef objectDef = GetObjectDef(objectIdentifier);
+            //            ObjectDef objectDef = GetObjectDef(ObjectIdentifier);
             //
             //            List<Join> parentJoins = new List<Join>();
             //
-            //            if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.Name)
+            //            if ((SelectColumnIdentifier.SelectColumnIdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.Name)
             //            {
             //                parentJoins.Add(Joins[0]);
             //            }
-            //            else if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.ObjectName)
+            //            else if ((SelectColumnIdentifier.SelectColumnIdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.ObjectName)
             //            {
-            //                parentJoins.AddRange(Joins.Where(item => item.ObjectDef.Name == columnIdentifier.Object));
+            //                parentJoins.AddRange(Joins.Where(item => item.ObjectDef.Name == SelectColumnIdentifier.Object));
             //
-            //                parentJoins.AddRange(Joins.Where(item => item.Alias == columnIdentifier.Object));
+            //                parentJoins.AddRange(Joins.Where(item => item.Alias == SelectColumnIdentifier.Object));
             //            }
-            //            else if ((columnIdentifier.ColumnIdentiferType & ColumnIdentiferType.SchemaObjectName) == ColumnIdentiferType.SchemaObjectName)
+            //            else if ((SelectColumnIdentifier.SelectColumnIdentiferType & SelectColumnIdentiferType.SchemaObjectName) == SelectColumnIdentiferType.SchemaObjectName)
             //            {
-            //                parentJoins.AddRange(Joins.Where(item => item.ObjectDef.SchemaDef.Name == columnIdentifier.Schema &&
-            //                    item.ObjectDef.Name == columnIdentifier.Object));
+            //                parentJoins.AddRange(Joins.Where(item => item.ObjectDef.SchemaDef.Name == SelectColumnIdentifier.Schema &&
+            //                    item.ObjectDef.Name == SelectColumnIdentifier.Object));
             //            }
             //
             //            if (parentJoins.Count != 1)
@@ -237,7 +251,7 @@ namespace DTS.SqlServer.DataAccess
             //
             //            Join parentJoin = parentJoins[0];
             //
-            //            List<ColumnDef> parentColumnDefs = new List<ColumnDef>(parentJoin.ObjectDef.ColumnDefs.Where(item => item.Name == columnIdentifier.Name));
+            //            List<ColumnDef> parentColumnDefs = new List<ColumnDef>(parentJoin.ObjectDef.ColumnDefs.Where(item => item.Name == SelectColumnIdentifier.Name));
             //
             //            if (parentColumnDefs.Count != 1)
             //            {
@@ -274,13 +288,13 @@ namespace DTS.SqlServer.DataAccess
             switch (objectDefs.Count)
             {
                 case 0:
-                    AddValidationError("Failed to find object definition for identifier '{0}'", objectIdentifier);
+                    AddValidationError("Failed to find object definition for IdentifierBase '{0}'", objectIdentifier);
                     break;
                 case 1:
                     objectDef = objectDefs[0];
                     break;
                 default:
-                    AddValidationError("Multiple object definitions found for identifier '{0}'", objectIdentifier);
+                    AddValidationError("Multiple object definitions found for IdentifierBase '{0}'", objectIdentifier);
                     break;
             }
 

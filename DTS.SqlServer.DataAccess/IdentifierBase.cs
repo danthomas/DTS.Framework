@@ -3,35 +3,49 @@ using System.Collections.Generic;
 
 namespace DTS.SqlServer.DataAccess
 {
-    public class Identifier
+    public abstract class IdentifierBase
     {
-        private readonly string _identifier;
-
+        private string _text;
         protected List<string> Tokens;
 
-        internal Identifier(string identifier)
+        internal IdentifierBase(string text)
         {
-            _identifier = identifier;
-            Tokenise(identifier);
+            Text = text;
         }
 
-        private void Tokenise(string identifier)
+        public string Text
+        {
+            get { return _text; }
+            set
+            {
+                _text = value;
+                Tokenise();
+                SetTokens();
+                SetObjectIdentifierType();
+            }
+        }
+
+        public abstract void SetTokens();
+
+        public abstract void SetObjectIdentifierType();
+
+        protected virtual void Tokenise()
         {
             Tokens = new List<string>();
             string token = "";
 
             bool squareBrackets = false;
 
-            foreach (char c in identifier)
+            foreach (char c in _text)
             {
                 if (c == '[' && squareBrackets)
                 {
-                    throw new Exception("Invalid identifier");
+                    throw new Exception("Invalid _text");
                 }
 
                 if (c == ']' && !squareBrackets)
                 {
-                    throw new Exception("Invalid identifier");
+                    throw new Exception("Invalid _text");
                 }
 
                 if (c == '[')
@@ -81,11 +95,6 @@ namespace DTS.SqlServer.DataAccess
         protected string GetAliasToken()
         {
             return Tokens.Count >= 3 && Tokens[Tokens.Count - 2] == " " ? Tokens[Tokens.Count - 1] : "";
-        }
-
-        public override string ToString()
-        {
-            return _identifier;
         }
     }
 }

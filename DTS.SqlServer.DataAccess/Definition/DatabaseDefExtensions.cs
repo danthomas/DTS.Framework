@@ -1,3 +1,5 @@
+using System;
+
 namespace DTS.SqlServer.DataAccess.Definition
 {
     public static class DatabaseDefExtensions
@@ -6,5 +8,7 @@ namespace DTS.SqlServer.DataAccess.Definition
         {
             return new Query(thisDatabaseDef);
         }
+
+        
     }
 }
