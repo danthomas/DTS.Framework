@@ -1,37 +1,20 @@
 ﻿namespace DTS.Framework.DomainDefinition
 {
-    public class Property
+    public abstract class Property
     {
-        public Property(Entity entity, string name, DataType dataType, int length, byte prec, byte scale)
+        protected Property(Entity entity, string name, bool nullable)
         {
             Entity = entity;
             Name = name;
-            DataType = dataType;
-            Length = length;
-            Prec = prec;
-            Scale = scale;
-        }
-
-        public Property(Entity entity, string name, Entity referncedEntity)
-        {
-            Entity = entity;
-            Name = name;
-            DataType = referncedEntity.IdentityProperty.DataType;
-            ReferencedEntity = referncedEntity;
+            Nullable = nullable;
         }
 
         public Entity Entity { get; private set; }
 
         public string Name { get; private set; }
 
-        public DataType DataType { get; private set; }
+        public abstract DataType DataType { get; }
 
-        public int Length { get; set; }
-
-        public byte Prec { get; set; }
-        
-        public byte Scale { get; set; }
-
-        public Entity ReferencedEntity { get; private set; }
+        public bool Nullable { get; set; }
     }
 }

@@ -6,10 +6,11 @@ namespace DTS.Framework.DomainDefinition
 {
     public class Entity
     {
-        public Entity(Group group, string name)
+        internal Entity(Group @group, string name, string plural)
         {
             Group = group;
             Name = name;
+            Plural = plural;
             Properties = new List<Property>();
         }
 
@@ -17,88 +18,99 @@ namespace DTS.Framework.DomainDefinition
 
         public string Name { get; private set; }
 
+        public string Plural { get; set; }
+
         public List<Property> Properties { get; private set; }
 
-        public Entity AddProperty<T>(string name)
+        public Entity Value<T>(string name, bool nullable = false)
         {
-            return AddProperty(name, typeof (T), 0, 0, 0);
+            return Value(name, typeof(T), 0, 0, 0, nullable);
         }
 
-        public Entity AddProperty<T>(string name, short length)
+        public Entity Value<T>(string name, short length, bool nullable = false)
         {
-            return AddProperty(name, typeof(T), length, 0, 0);
+            return Value(name, typeof(T), length, 0, 0, nullable);
         }
 
-        public Entity AddProperty<T>(string name, byte prec, byte scale)
+        public Entity Value<T>(string name, byte prec, byte scale, bool nullable = false)
         {
-            return AddProperty(name, typeof(T), 0, prec, scale);
+            return Value(name, typeof(T), 0, prec, scale, nullable);
         }
 
-        public Entity AddProperty(string name, Type type)
+        public Entity Value(string name, Type type, bool nullable = false)
         {
-            return AddProperty(name, type, 0, 0, 0);
+            return Value(name, type, 0, 0, 0, nullable);
         }
 
-        public Entity AddProperty(string name, Type type, int length)
+        public Entity Value(string name, Type type, int length, bool nullable = false)
         {
-            return AddProperty(name, type, length, 0, 0);
+            return Value(name, type, length, 0, 0, nullable);
         }
 
-        public Entity AddProperty(string name, Type type, byte prec, byte scale)
+        public Entity Value(string name, Type type, byte prec, byte scale, bool nullable = false)
         {
-            return AddProperty(name, type, 0, prec, scale);
+            return Value(name, type, 0, prec, scale, nullable);
         }
 
-        public Entity AddProperty(Entity entity)
+        public Entity Value(string name, Type type, int length, byte prec, byte scale, bool nullable = false)
         {
-            return AddProperty(entity.Name, entity);
-        }
+            DataType dataType = Group.Domain.DataTypes.First(item => item.Type == type);
 
-        public Entity AddProperty(string name, Entity entity)
-        {
-            Property property = new Property(this, name, entity);
+            if (dataType.HasLength && length == 0)
+            {
+                length = Group.Domain.DomainOptions.DefaultLength;
+            }
 
-            Properties.Add(property);
+            if (dataType.HasPrec && prec == 0)
+            {
+                prec = Group.Domain.DomainOptions.DefaultPrec;
+            }
+
+            if (dataType.HasScale && scale == 0)
+            {
+                scale = Group.Domain.DomainOptions.DefaultScale;
+            }
+
+            Value value = new Value(this, name, dataType, length, prec, scale, nullable);
+
+            Properties.Add(value);
 
             return this;
         }
 
-        public Entity AddProperty(string name, Type type, int length, byte prec, byte scale)
+        public Entity Reference(Entity entity, bool nullable = false)
         {
-            DataType dataType = Group.Domain.DataTypes.Single(item => item.Type == type);
+            return Reference(entity.Name, entity, nullable);
+        }
 
-            Property property = new Property(this, name, dataType, length, prec, scale);
+        public Entity Reference(string name, Entity entity, bool nullable = false)
+        {
+            Reference reference = new Reference(this, name, entity, nullable);
 
-            Properties.Add(property);
+            Properties.Add(reference);
 
             return this;
         }
 
         public Entity SetIdentifier(string name)
         {
-            if (IdentityProperty != null)
+            if (IdentityValue != null)
             {
                 throw new DomainDefinitionException(DomainDefinitionExceptionType.IdentifierAlreadySet, "Identifier already set.");
             }
 
-            Property property = Properties.SingleOrDefault(item => item.Name == name);
+            Value value = Properties.OfType<Value>().SingleOrDefault(item => item.Name == name);
 
-            if (property == null)
+            if (value == null)
             {
                 throw new DomainDefinitionException(DomainDefinitionExceptionType.PropertyNotFound, "Property {0} not found.", name);
             }
 
-            IdentityProperty = property;
+            IdentityValue = value;
 
             return this;
         }
 
-        public Property IdentityProperty { get; set; }
-
-        public Entity AddMany(Entity entity)
-        {
-
-            return this;
-        }
+        public Value IdentityValue { get; set; }
     }
 }

@@ -5,9 +5,9 @@ namespace DTS.Framework.DomainDefinition
 {
     public class Domain
     {
-        public Domain(string name) 
+        public Domain(string name)
             : this(name, new DomainOptions())
-        {   
+        {
         }
 
         public Domain(string name, DomainOptions domainOptions)
@@ -23,7 +23,7 @@ namespace DTS.Framework.DomainDefinition
         public DomainOptions DomainOptions { get; private set; }
 
         public List<DataType> DataTypes { get; set; }
-        
+
         public List<Group> Groups { get; set; }
 
         public Group AddGroup(string name)
@@ -52,19 +52,25 @@ namespace DTS.Framework.DomainDefinition
                     foreach (Property property in entity.Properties)
                     {
                         ret += String.Format(@"
-      {0} {1}", property.Name, property.DataType.Name);
+      {0}", property.Name);
+                        if (property is Reference)
+                        {
+                            ret += String.Format(" {0}", ((Reference)property).ReferencedEntity.Name);
+                        }
+                        else if (property is Value)
+                        {
+                            Value value = (Value)property;
 
-                        if (property.ReferencedEntity != null)
-                        {
-                            ret += String.Format(" {0}", property.ReferencedEntity.Name);
-                        }
-                        else if (property.Length > 0)
-                        {
-                            ret += String.Format(" {0}", property.Length);
-                        }
-                        else if (property.Length > 0)
-                        {
-                            ret += String.Format(" {0}", property.Length);
+                            ret += String.Format(@" {0}", value.DataType.Name);
+
+                            if (value.Length > 0)
+                            {
+                                ret += String.Format(" {0}", value.Length);
+                            }
+                            else if (value.Length > 0)
+                            {
+                                ret += String.Format(" {0}", value.Length);
+                            }
                         }
                     }
                 }
@@ -73,17 +79,20 @@ namespace DTS.Framework.DomainDefinition
             return ret;
         }
 
-        public void AddDefaultDataTypes()
+        public Domain AddDefaultDataTypes()
         {
-            AddDataType(new BooleanDataType("Boolean"));
-            AddDataType(new ByteDataType("Byte"));
-            AddDataType(new Int16DataType("Int16"));
-            AddDataType(new Int32DataType("Int32"));
-            AddDataType(new Int64DataType("Int64"));
-            AddDataType(new StringDataType("String"));
-            AddDataType(new DateDataType("Date"));
-            AddDataType(new TimeSpanDataType("TimeSpan"));
-            AddDataType(new DecimalDataType("Decimal"));
+            AddDataType(new BooleanDataType());
+            AddDataType(new ByteDataType());
+            AddDataType(new Int16DataType());
+            AddDataType(new Int32DataType());
+            AddDataType(new Int64DataType());
+            AddDataType(new StringDataType());
+            AddDataType(new DateDataType());
+            AddDataType(new DateTimeDataType());
+            AddDataType(new TimeSpanDataType());
+            AddDataType(new DecimalDataType());
+
+            return this;
         }
 
         private Domain AddDataType(DataType dataType)

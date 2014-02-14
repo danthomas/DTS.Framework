@@ -5,7 +5,7 @@ namespace DTS.Framework.DomainDefinition
 {
     public class Group
     {
-        public Group(Domain domain, string name)
+        internal Group(Domain domain, string name)
         {
             Domain = domain;
             Name = name;
@@ -18,9 +18,15 @@ namespace DTS.Framework.DomainDefinition
 
         public List<Entity> Entities { get; private set; }
 
-        public Entity AddEntity<T>(string name) where T : struct
+
+        public Entity AddEntity<T>(string name)
         {
-            Entity entity = new Entity(this, name);
+            return AddEntity<T>(name, name + "s");
+        }
+
+        public Entity AddEntity<T>(string name, string plural)
+        {
+            Entity entity = new Entity(this, name, plural);
 
             AddAutoIdProperty(typeof(T), entity);
 
@@ -31,7 +37,12 @@ namespace DTS.Framework.DomainDefinition
 
         public Entity AddEntity(string name)
         {
-            Entity entity = new Entity(this, name);
+            return AddEntity(name, name + "s");
+        }
+
+        public Entity AddEntity(string name, string plural)
+        {
+            Entity entity = new Entity(this, name, plural);
 
             if (Domain.DomainOptions.AutoIdProperty)
             {
@@ -47,7 +58,7 @@ namespace DTS.Framework.DomainDefinition
         {
             string name = String.Format(Domain.DomainOptions.AutoPropertyNameFormat, entity.Name);
 
-            entity.AddProperty(name, type).SetIdentifier(name);
+            entity.Value(name, type).SetIdentifier(name);
         }
     }
 }

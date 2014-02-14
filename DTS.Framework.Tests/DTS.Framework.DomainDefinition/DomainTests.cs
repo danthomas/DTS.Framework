@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using DTS.Framework.DomainDefinition;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,41 +8,72 @@ namespace DTS.Framework.Tests.DTS.Framework.DomainDefinition
     public class DomainTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void CreateMusicDomain()
         {
             Domain domain = new Domain("Music", new DomainOptions
             {
-                AutoIdProperty = true
-            });
-
-            domain.AddDefaultDataTypes();
+                AutoIdProperty = true,
+                AutoIdPropertyType = typeof(Int16)
+            }).AddDefaultDataTypes();
 
             Group group = domain.AddGroup("Main");
+
+            Entity genre = group.AddEntity("Genre")
+                .Value<string>("Name");
             
-            Entity artistEntity = group.AddEntity<short>("Artist")
-                .AddProperty<string>("Name");
+            Entity artist = group.AddEntity("Artist")
+                .Value<string>("Name");
 
-            Entity albumEntity = group.AddEntity<short>("Album")
-                .AddProperty<string>("Name")
-                .AddProperty(artistEntity);
+            Entity album = group.AddEntity("Album")
+                .Value<string>("Name")
+                .Reference(artist)
+                .Reference(genre, true);
 
-            Entity trackEntity = group.AddEntity("Track")
-                .AddProperty<string>("Name")
-                .AddProperty<TimeSpan>("Length")
-                .AddProperty(artistEntity)
-                .AddProperty(albumEntity);
+            Entity track = group.AddEntity<int>("Track")
+                .Value<string>("Name")
+                .Value<TimeSpan>("Length")
+                .Reference(artist)
+                .Reference(album)
+                .Reference(genre, true);
 
-            Entity genreEntity = group.AddEntity<short>("Genre")
-                .AddProperty<string>("Name");
+            Entity playlist = group.AddEntity("PlayList")
+                .Value<string>("Name");
 
-            Entity playListEntity = group.AddEntity<short>("PlayList")
-                .AddProperty<string>("Name")
-                .AddMany(trackEntity);
-
+            Entity playlistTrack = group.AddEntity<int>("PlayList")
+                .Reference(playlist)
+                .Reference(track)
+                .Value<byte>("Order");
 
             string actual = domain.ToString();
 
-            Assert.AreEqual(@"", actual);
+            Assert.AreEqual(@"<Music
+  Main
+    Genre
+      GenreId SmallInt
+      Name String
+    Artist
+      ArtistId SmallInt
+      Name String
+    Album
+      AlbumId SmallInt
+      Name String
+      Artist Artist
+      Genre Genre
+    Track
+      TrackId Int
+      Name String
+      Length TimeSpan
+      Artist Artist
+      Album Album
+      Genre Genre
+    PlayList
+      PlayListId SmallInt
+      Name String
+    PlayList
+      PlayListId Int
+      PlayList PlayList
+      Track Track
+      Order TinyInt", actual);
         }
     }
 }
