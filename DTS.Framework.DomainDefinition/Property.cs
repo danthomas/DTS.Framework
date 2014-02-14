@@ -1,16 +1,37 @@
-﻿using System;
-
-namespace DTS.Framework.DomainDefinition
+﻿namespace DTS.Framework.DomainDefinition
 {
     public class Property
     {
-        public Property(string name, Type type)
+        public Property(Entity entity, string name, DataType dataType, int length, byte prec, byte scale)
         {
+            Entity = entity;
             Name = name;
-            Type = type;
+            DataType = dataType;
+            Length = length;
+            Prec = prec;
+            Scale = scale;
         }
 
-        public string Name { get; set; }
-        public Type Type { get; set; }
+        public Property(Entity entity, string name, Entity referncedEntity)
+        {
+            Entity = entity;
+            Name = name;
+            DataType = referncedEntity.IdentityProperty.DataType;
+            ReferencedEntity = referncedEntity;
+        }
+
+        public Entity Entity { get; private set; }
+
+        public string Name { get; private set; }
+
+        public DataType DataType { get; private set; }
+
+        public int Length { get; set; }
+
+        public byte Prec { get; set; }
+        
+        public byte Scale { get; set; }
+
+        public Entity ReferencedEntity { get; private set; }
     }
 }

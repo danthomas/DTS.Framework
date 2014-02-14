@@ -55,24 +55,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DTS.Framework.DomainDefinition\DomainTests.cs" />
-    <Compile Include="SqlServer.DataAccess\SelectColumnIdentifierTests.cs" />
-    <Compile Include="SqlServer.DataAccess\Definition\DatabaseDefTests.cs" />
-    <Compile Include="SqlServer.DataAccess\ObjectIdentifierTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlServer.DataAccess\Query2Tests.cs" />
-    <Compile Include="SqlServer.DataAccess\QueryTests.cs" />
-    <Compile Include="SqlServer.DataAccess\QueryTests.SelectStatement.cs" />
-    <Compile Include="SqlServer.DataAccess\TestBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DTS.Framework.DomainDefinition\DTS.Framework.DomainDefinition.csproj">
       <Project>{51654771-9D48-4749-8A62-115C73F9C240}</Project>
       <Name>DTS.Framework.DomainDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DTS.SqlServer.DataAccess\DTS.SqlServer.DataAccess.csproj">
-      <Project>{578997B1-0B07-45E1-96C7-750FECAA85DD}</Project>
-      <Name>DTS.SqlServer.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTS.Utilities\DTS.Utilities.csproj">
       <Project>{035F77B5-6AA2-47B3-9759-C448468E2F42}</Project>

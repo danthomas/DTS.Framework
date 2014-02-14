@@ -39,11 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataType.cs" />
     <Compile Include="Domain.cs" />
+    <Compile Include="DomainDefinitionException.cs" />
+    <Compile Include="DomainDefinitionExceptionType.cs" />
+    <Compile Include="DomainOptions.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Property.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTS.Utilities\DTS.Utilities.csproj">
+      <Project>{035F77B5-6AA2-47B3-9759-C448468E2F42}</Project>
+      <Name>DTS.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

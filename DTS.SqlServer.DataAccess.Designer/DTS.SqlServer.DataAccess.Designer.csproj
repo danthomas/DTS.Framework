@@ -78,10 +78,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DTS.SqlServer.DataAccess\DTS.SqlServer.DataAccess.csproj">
-      <Project>{578997B1-0B07-45E1-96C7-750FECAA85DD}</Project>
-      <Name>DTS.SqlServer.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DTS.Utilities\DTS.Utilities.csproj">
       <Project>{035F77B5-6AA2-47B3-9759-C448468E2F42}</Project>
       <Name>DTS.Utilities</Name>
