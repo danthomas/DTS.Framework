@@ -10,13 +10,21 @@ namespace DTS.Framework.CodeGen
     {
         public void Generate(string directoryPath, Domain domain)
         {
-            Type iTemplateType = typeof (ITemplate);
-            Type iEntityTemplateType = typeof (IEntityTemplate);
+            Type iTemplateType = typeof(ITemplate);
+            Type iEntityTemplateType = typeof(IEntityTemplate);
+            Type iDomainTemplateType = typeof(IDomainTemplate);
 
             foreach (Type type in GetType().Assembly.GetTypes()
                 .Where(item => item.GetInterfaces().Contains(iTemplateType)))
             {
-                if (type.GetInterfaces().Contains(iEntityTemplateType))
+                if (type.GetInterfaces().Contains(iDomainTemplateType))
+                {
+                    IDomainTemplate domainTemplate = (IDomainTemplate)Activator.CreateInstance(type);
+                    domainTemplate.Domain = domain;
+
+                    WriteText(directoryPath, domainTemplate);
+                }
+                else if (type.GetInterfaces().Contains(iEntityTemplateType))
                 {
                     foreach (Entity entity in domain.Groups.SelectMany(item => item.Entities))
                     {

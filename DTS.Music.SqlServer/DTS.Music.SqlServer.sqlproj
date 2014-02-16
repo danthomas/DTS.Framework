@@ -58,5 +58,18 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Schemas" />
+    <Folder Include="Schemas\Main\Tables" />
+    <Folder Include="Schemas\Main" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schemas\Main\Tables\Album.g.sql" />
+    <Build Include="Schemas\Main\Tables\Artist.g.sql" />
+    <Build Include="Schemas\Main\Tables\Genre.g.sql" />
+    <Build Include="Schemas\Main\Tables\PlayList.g.sql" />
+    <Build Include="Schemas\Main\Tables\Track.g.sql" />
+    <Build Include="Schemas\Schemas.g.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DTS.Music.SqlServer.publish.xml" />
   </ItemGroup>
 </Project>

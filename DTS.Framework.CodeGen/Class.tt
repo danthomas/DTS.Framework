@@ -10,7 +10,7 @@ namespace <#= Entity.Group.Domain.Name #>.Domain.<#= Entity.Group.Name #>
 {
 	public class <#= Entity.Name #>
 	{<#
-    this.ForEachValueProperty((value, first) =>
+    this.ForEachValue((value, first) =>
     {
         #>
 		

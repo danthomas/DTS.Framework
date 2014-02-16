@@ -9,6 +9,7 @@
 // ------------------------------------------------------------------------------
 namespace DTS.Framework.CodeGen
 {
+    using DTS.Framework.DomainDefinition;
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace DTS.Framework.CodeGen
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\Dan\Documents\Visual Studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+    #line 1 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class Table : TableBase
     {
@@ -28,6 +29,52 @@ namespace DTS.Framework.CodeGen
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("/*\r\ncreate table ");
+            
+            #line 7 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n(\r\n");
+            
+            #line 9 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+
+    this.ForEachProperty((property, first) =>
+    {
+		
+            
+            #line default
+            #line hidden
+            
+            #line 12 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(first ? "" : @"
+, "));
+            
+            #line default
+            #line hidden
+            
+            #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.DataType.SqlServerName));
+            
+            #line default
+            #line hidden
+            
+            #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+	     
+    });
+
+            
+            #line default
+            #line hidden
+            this.Write("\r\n)\r\n*/");
             return this.GenerationEnvironment.ToString();
         }
     }

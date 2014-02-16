@@ -9,7 +9,6 @@
 // ------------------------------------------------------------------------------
 namespace DTS.Framework.CodeGen
 {
-    using DTS.Framework.DomainDefinition;
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
@@ -19,9 +18,9 @@ namespace DTS.Framework.CodeGen
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
+    #line 1 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
-    public partial class Class : ClassBase
+    public partial class Schemas : SchemasBase
     {
 #line hidden
         /// <summary>
@@ -29,61 +28,27 @@ namespace DTS.Framework.CodeGen
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 9 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Group.Domain.Name));
-            
-            #line default
-            #line hidden
-            this.Write(".Domain.");
-            
-            #line 9 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Group.Name));
+            #line 6 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
+ this.ForEachGroup((schema, first) =>
+{
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n\tpublic class ");
+            this.Write("\tcreate schema ");
             
-            #line 11 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
+            #line 8 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(schema.Name));
             
             #line default
             #line hidden
-            this.Write("\r\n\t{");
             
-            #line 12 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
+            #line 8 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
 
-    this.ForEachValue((value, first) =>
-    {
-        
+});
             
             #line default
             #line hidden
-            this.Write("\t\t\r\n\t\tpublic ");
-            
-            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(value.DataType.CSharpName));
-            
-            #line default
-            #line hidden
-            this.Write(" ");
-            
-            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(value.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" { get; set; }");
-            
-            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Class.tt"
-
-    });
-	
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -95,7 +60,7 @@ namespace DTS.Framework.CodeGen
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
-    public class ClassBase
+    public class SchemasBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
