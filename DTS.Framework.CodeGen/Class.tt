@@ -1,0 +1,22 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="DTS.Framework.DomainDefinition" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+using System;
+
+namespace <#= Entity.Group.Domain.Name #>.Domain.<#= Entity.Group.Name #>
+{
+	public class <#= Entity.Name #>
+	{<#
+    this.ForEachValueProperty((value, first) =>
+    {
+        #>
+		
+		public <#= value.DataType.CSharpName #> <#= value.Name #> { get; set; }<#
+    });
+	#>
+
+	}
+}

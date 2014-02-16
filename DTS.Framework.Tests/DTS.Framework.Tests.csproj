@@ -54,11 +54,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Common\Music.cs" />
+    <Compile Include="DTS.Framework.CodeGen\GeneratorTests.cs" />
     <Compile Include="DTS.Framework.DomainDefinition\DomainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\DTS.Framework.CodeGen\DTS.Framework.CodeGen.csproj">
+      <Project>{17C6B96E-659B-462A-A546-552269635187}</Project>
+      <Name>DTS.Framework.CodeGen</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTS.Framework.DomainDefinition\DTS.Framework.DomainDefinition.csproj">
       <Project>{51654771-9D48-4749-8A62-115C73F9C240}</Project>
       <Name>DTS.Framework.DomainDefinition</Name>

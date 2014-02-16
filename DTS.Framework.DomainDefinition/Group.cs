@@ -16,8 +16,9 @@ namespace DTS.Framework.DomainDefinition
 
         public string Name { get; private set; }
 
-        public List<Entity> Entities { get; private set; }
+        public string FullName { get { return String.Format("{0}.{1}", Domain.Name, Name); } }
 
+        public List<Entity> Entities { get; private set; }
 
         public Entity AddEntity<T>(string name)
         {

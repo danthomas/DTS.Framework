@@ -18,9 +18,13 @@ namespace DTS.Framework.DomainDefinition
 
         public string Name { get; private set; }
 
+        public string FullName { get { return String.Format("{0}.{1}.{2}", Group.Domain.Name, Group.Name, Name); } }
+
         public string Plural { get; set; }
 
         public List<Property> Properties { get; private set; }
+
+        public IEnumerable<Value> Values { get { return Properties.OfType<Value>(); } }
 
         public Entity Value<T>(string name, bool nullable = false)
         {
