@@ -2,9 +2,9 @@ using System;
 
 namespace DTS.Music.Domain.Main
 {
-	public class PlayList
+	public class Playlist
 	{		
-		public int PlayListId { get; set; }		
-		public byte Order { get; set; }
+		public short PlaylistId { get; set; }		
+		public string Name { get; set; }
 	}
 }

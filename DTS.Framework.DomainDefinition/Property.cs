@@ -1,20 +1,27 @@
-﻿namespace DTS.Framework.DomainDefinition
+﻿using System;
+
+namespace DTS.Framework.DomainDefinition
 {
     public abstract class Property
     {
-        protected Property(Entity entity, string name, bool nullable)
+        protected Property(Entity entity, string name, bool isNullable, bool isAuto)
         {
             Entity = entity;
             Name = name;
-            Nullable = nullable;
+            IsNullable = isNullable;
+            IsAuto = isAuto;
         }
 
         public Entity Entity { get; private set; }
 
         public string Name { get; private set; }
 
-        public abstract DataType DataType { get; }
+        public abstract IDataType DataType { get; }
 
-        public bool Nullable { get; set; }
+        public bool IsNullable { get; set; }
+
+        public bool IsAuto { get; set; }
+
+        public abstract string SqlServerType { get; }
     }
 }

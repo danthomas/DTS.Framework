@@ -11,6 +11,7 @@ namespace DTS.Framework.CodeGen
 {
     using DTS.Framework.DomainDefinition;
     using System.Linq;
+    using System.Runtime.ExceptionServices;
     using System.Text;
     using System.Collections.Generic;
     using System;
@@ -29,14 +30,21 @@ namespace DTS.Framework.CodeGen
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("/*\r\ncreate table ");
+            this.Write("create table [");
+            
+            #line 7 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Group.Name));
+            
+            #line default
+            #line hidden
+            this.Write("].[");
             
             #line 7 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
             
             #line default
             #line hidden
-            this.Write("\r\n(\r\n");
+            this.Write("]\r\n(\r\n");
             
             #line 9 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
 
@@ -53,28 +61,223 @@ namespace DTS.Framework.CodeGen
             
             #line default
             #line hidden
+            this.Write("[");
             
             #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
+            this.Write("] ");
+            
+            #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.SqlServerType));
+            
+            #line default
+            #line hidden
             this.Write(" ");
             
             #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property.DataType.SqlServerName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsNullable ? "" : "NOT "));
+            
+            #line default
+            #line hidden
+            this.Write("NULL");
+            
+            #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.IsAuto ? " IDENTITY (1, 1)" : ""));
             
             #line default
             #line hidden
             
             #line 13 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
-	     
+
+    });
+	
+            
+            #line default
+            #line hidden
+            this.Write("\r\n, CONSTRAINT [PK_");
+            
+            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
+            
+            #line default
+            #line hidden
+            this.Write("] PRIMARY KEY ([");
+            
+            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.IdentityValue.Name));
+            
+            #line default
+            #line hidden
+            this.Write("])");
+            
+            #line 17 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+
+    this.ForEachReference((reference, first) =>
+    {
+
+            
+            #line default
+            #line hidden
+            this.Write("\r\n, CONSTRAINT [FK_");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
+            
+            #line default
+            #line hidden
+            this.Write("_");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.Name));
+            
+            #line default
+            #line hidden
+            this.Write("_");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.ReferencedEntity.Name));
+            
+            #line default
+            #line hidden
+            this.Write("] FOREIGN KEY ([");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.Name));
+            
+            #line default
+            #line hidden
+            this.Write("]) REFERENCES [");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.ReferencedEntity.Group.Name));
+            
+            #line default
+            #line hidden
+            this.Write("].[");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.ReferencedEntity.Name));
+            
+            #line default
+            #line hidden
+            this.Write("]([");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(reference.ReferencedEntity.IdentityValue.Name));
+            
+            #line default
+            #line hidden
+            this.Write("])");
+            
+            #line 22 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+        
+    });
+
+    this.ForEachUnique((unique, first) =>
+    {
+        
+            
+            #line default
+            #line hidden
+            this.Write("\r\n, CONSTRAINT [AK_");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Entity.Name));
+            
+            #line default
+            #line hidden
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+ unique.ForEachUniqueProperty((property, firstProperty) => { 
+            
+            #line default
+            #line hidden
+            this.Write("_");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+ }); 
+            
+            #line default
+            #line hidden
+            this.Write("] UNIQUE (");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+ unique.ForEachUniqueProperty((property, firstProperty) => { 
+            
+            #line default
+            #line hidden
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(firstProperty ? "" : ", "));
+            
+            #line default
+            #line hidden
+            this.Write("[");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
+            
+            #line default
+            #line hidden
+            this.Write("]");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+ }); 
+            
+            #line default
+            #line hidden
+            this.Write(")");
+            
+            #line 29 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+
+    });
+
+    this.ForEachValueWhere(item => item.MinLength > 0, (value, first) =>
+    {
+        
+            
+            #line default
+            #line hidden
+            this.Write("\r\n, CONSTRAINT [");
+            
+            #line 36 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(value.Name));
+            
+            #line default
+            #line hidden
+            this.Write("_MinLength] CHECK (LEN([");
+            
+            #line 36 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(value.Name));
+            
+            #line default
+            #line hidden
+            this.Write("]) > ");
+            
+            #line 36 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(value.MinLength));
+            
+            #line default
+            #line hidden
+            this.Write(")");
+            
+            #line 36 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Table.tt"
+
     });
 
             
             #line default
             #line hidden
-            this.Write("\r\n)\r\n*/");
+            this.Write("\r\n)");
             return this.GenerationEnvironment.ToString();
         }
     }

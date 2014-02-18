@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace DTS.Framework.DomainDefinition
 {
@@ -12,6 +14,7 @@ namespace DTS.Framework.DomainDefinition
             Name = name;
             Plural = plural;
             Properties = new List<Property>();
+            Uniques = new List<Unique>();
         }
 
         public Group Group { get; private set; }
@@ -26,65 +29,59 @@ namespace DTS.Framework.DomainDefinition
 
         public IEnumerable<Value> Values { get { return Properties.OfType<Value>(); } }
 
-        public Entity Value<T>(string name, bool nullable = false)
+        public IEnumerable<Reference> References { get { return Properties.OfType<Reference>(); } }
+
+        public Entity Value<T>(string name, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
         {
-            return Value(name, typeof(T), 0, 0, 0, nullable);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Type == typeof(T)), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
         }
 
-        public Entity Value<T>(string name, short length, bool nullable = false)
+        public Entity Value(string name, Type type, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
         {
-            return Value(name, typeof(T), length, 0, 0, nullable);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Type == type), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
         }
 
-        public Entity Value<T>(string name, byte prec, byte scale, bool nullable = false)
+        public Entity Value(string name, string dataTypeName, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
         {
-            return Value(name, typeof(T), 0, prec, scale, nullable);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Name == dataTypeName), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
         }
 
-        public Entity Value(string name, Type type, bool nullable = false)
+        public Entity Value(string name, IDataType dataType, int maxLength = 0, int minLength = 0, byte prec = 0, byte scale = 0, bool isNullable = false, bool isUnique = false, bool isAuto = false)
         {
-            return Value(name, type, 0, 0, 0, nullable);
-        }
-
-        public Entity Value(string name, Type type, int length, bool nullable = false)
-        {
-            return Value(name, type, length, 0, 0, nullable);
-        }
-
-        public Entity Value(string name, Type type, byte prec, byte scale, bool nullable = false)
-        {
-            return Value(name, type, 0, prec, scale, nullable);
-        }
-
-        public Entity Value(string name, Type type, int length, byte prec, byte scale, bool nullable = false)
-        {
-            DataType dataType = Group.Domain.DataTypes.First(item => item.Type == type);
-
-            if (dataType.HasLength && length == 0)
+            if (dataType.IsAuto)
             {
-                length = Group.Domain.DomainOptions.DefaultLength;
+                isAuto = true;
             }
 
-            if (dataType.HasPrec && prec == 0)
+            if (maxLength == 0 && dataType.MaxLength > 0)
             {
-                prec = Group.Domain.DomainOptions.DefaultPrec;
+                maxLength = dataType.MaxLength;
             }
 
-            if (dataType.HasScale && scale == 0)
+            if (minLength == 0 && dataType.MinLength > 0)
             {
-                scale = Group.Domain.DomainOptions.DefaultScale;
+                minLength = dataType.MinLength;
             }
 
-            Value value = new Value(this, name, dataType, length, prec, scale, nullable);
+            Value value = new Value(this, name, dataType, maxLength, minLength, prec, scale, isNullable, isAuto);
+
+            if (isUnique)
+            {
+                Unique unique = new Unique(value);
+
+                Uniques.Add(unique);
+            }
 
             Properties.Add(value);
 
             return this;
         }
 
+        public List<Unique> Uniques { get; set; }
+
         public Entity Reference(Entity entity, bool nullable = false)
         {
-            return Reference(entity.Name, entity, nullable);
+            return Reference(entity.IdentityValue.Name, entity, nullable);
         }
 
         public Entity Reference(string name, Entity entity, bool nullable = false)
@@ -116,5 +113,19 @@ namespace DTS.Framework.DomainDefinition
         }
 
         public Value IdentityValue { get; set; }
+
+        public Entity Unique(params string[] propertyNames)
+        {
+            Property[] properties = Properties.Where(item => propertyNames.Contains(item.Name)).ToArray();
+
+            if (propertyNames.Length != properties.Length)
+            {
+                throw new DomainDefinitionException(DomainDefinitionExceptionType.PropertyNotFound, "Failed to find property");
+            }
+
+            Uniques.Add(new Unique(properties));
+
+            return this;
+        }
     }
 }

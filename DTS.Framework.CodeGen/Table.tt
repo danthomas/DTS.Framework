@@ -1,18 +1,40 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="DTS.Framework.DomainDefinition" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.ExceptionServices" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-/*
-create table <#= Entity.Name #>
+create table [<#= Entity.Group.Name #>].[<#= Entity.Name #>]
 (
 <#
     this.ForEachProperty((property, first) =>
     {
 		#><#= first ? "" : @"
-, "#><#= property.Name #> <#= property.DataType.SqlServerName #><#	     
+, "#>[<#= property.Name #>] <#= property.SqlServerType #> <#= property.IsNullable ? "" : "NOT " #>NULL<#= property.IsAuto ? " IDENTITY (1, 1)" : "" #><#
+    });
+	#>
+
+, CONSTRAINT [PK_<#= Entity.Name #>] PRIMARY KEY ([<#= Entity.IdentityValue.Name #>])<#
+    this.ForEachReference((reference, first) =>
+    {
+#>
+
+, CONSTRAINT [FK_<#= Entity.Name #>_<#= reference.Name #>_<#= reference.ReferencedEntity.Name #>] FOREIGN KEY ([<#= reference.Name #>]) REFERENCES [<#= reference.ReferencedEntity.Group.Name #>].[<#= reference.ReferencedEntity.Name #>]([<#= reference.ReferencedEntity.IdentityValue.Name #>])<#        
+    });
+
+    this.ForEachUnique((unique, first) =>
+    {
+        #>
+
+, CONSTRAINT [AK_<#= Entity.Name #><# unique.ForEachUniqueProperty((property, firstProperty) => { #>_<#= property.Name #><# }); #>] UNIQUE (<# unique.ForEachUniqueProperty((property, firstProperty) => { #><#= firstProperty ? "" : ", " #>[<#= property.Name #>]<# }); #>)<#
+    });
+
+    this.ForEachValueWhere(item => item.MinLength > 0, (value, first) =>
+    {
+        #>
+
+, CONSTRAINT [<#= value.Name #>_MinLength] CHECK (LEN([<#= value.Name #>]) > <#= value.MinLength #>)<#
     });
 #>
 
 )
-*/

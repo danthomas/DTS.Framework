@@ -11,7 +11,7 @@ namespace DTS.Framework.Tests.DTS.Framework.DomainDefinition
         [TestMethod]
         public void Domain_ToString()
         {
-            Domain domain = Music.CreateMusicDomain();
+            Domain domain = Domains.CreateMusicDomain();
 
             string actual = domain.ToString();
 
@@ -35,12 +35,12 @@ namespace DTS.Framework.Tests.DTS.Framework.DomainDefinition
       Artist Artist
       Album Album
       Genre Genre
-    PlayList
-      PlayListId SmallInt
+    Playlist
+      PlaylistId SmallInt
       Name String
-    PlayList
-      PlayListId Int
-      PlayList PlayList
+    Playlist
+      PlaylistId Int
+      Playlist Playlist
       Track Track
       Order TinyInt", actual);
         }

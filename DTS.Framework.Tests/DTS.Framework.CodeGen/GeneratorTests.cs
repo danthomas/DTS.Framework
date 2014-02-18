@@ -11,13 +11,27 @@ namespace DTS.Framework.Tests.DTS.Framework.CodeGen
     public class GeneratorTests
     {
         [TestMethod]
-        public void Generate()
+        public void GenerateManager()
         {
             string directoryPath = Directory.GetCurrentDirectory();
 
             directoryPath = directoryPath.Replace(@"DTS.Framework.Tests\bin\Debug", "");
 
-            Domain domain = Music.CreateMusicDomain();
+            Domain domain = Domains.CreateManagerDomain();
+
+            Generator generator = new Generator();
+
+            generator.Generate(directoryPath, domain);
+        }
+
+        [TestMethod]
+        public void GenerateMusic()
+        {
+            string directoryPath = Directory.GetCurrentDirectory();
+
+            directoryPath = directoryPath.Replace(@"DTS.Framework.Tests\bin\Debug", "");
+
+            Domain domain = Domains.CreateMusicDomain();
 
             Generator generator = new Generator();
 

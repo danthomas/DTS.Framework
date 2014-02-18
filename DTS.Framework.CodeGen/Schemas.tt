@@ -5,5 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <# this.ForEachGroup((schema, first) =>
 {#>
-	create schema <#= schema.Name #><#
+<#= first ? "" : @"
+go"#>
+create schema [<#= schema.Name #>]<#
 });#>

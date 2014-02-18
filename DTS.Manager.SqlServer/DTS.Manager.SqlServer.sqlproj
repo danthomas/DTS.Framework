@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>DTS.Music.SqlServer</Name>
+    <Name>DTS.Manager.SqlServer</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{d155bcf9-c705-47f0-b781-588ba277bf5e}</ProjectGuid>
+    <ProjectGuid>{2c81b27f-2b68-4496-b70d-6a766ff73450}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>DTS.Music.SqlServer</RootNamespace>
-    <AssemblyName>DTS.Music.SqlServer</AssemblyName>
+    <RootNamespace>DTS.Manager.SqlServer</RootNamespace>
+    <AssemblyName>DTS.Manager.SqlServer</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -57,20 +57,18 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Schemas\Projects\Tables" />
+    <Folder Include="Schemas\Projects" />
     <Folder Include="Schemas" />
-    <Folder Include="Schemas\Main\Tables" />
-    <Folder Include="Schemas\Main" />
+    <Folder Include="Schemas\Customers\Tables" />
+    <Folder Include="Schemas\Customers" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schemas\Main\Tables\Album.g.sql" />
-    <Build Include="Schemas\Main\Tables\Artist.g.sql" />
-    <Build Include="Schemas\Main\Tables\Genre.g.sql" />
-    <Build Include="Schemas\Main\Tables\PlayList.g.sql" />
-    <Build Include="Schemas\Main\Tables\Track.g.sql" />
+    <Build Include="Schemas\Projects\Tables\Project.g.sql" />
     <Build Include="Schemas\Schemas.g.sql" />
-    <Build Include="Schemas\Main\Tables\PlayListTrack.g.sql" />
+    <Build Include="Schemas\Customers\Tables\Customer.g.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DTS.Music.SqlServer.publish.xml" />
+    <None Include="DTS.Manager.SqlServer.publish.xml" />
   </ItemGroup>
 </Project>

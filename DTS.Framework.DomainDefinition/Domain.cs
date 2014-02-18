@@ -15,14 +15,14 @@ namespace DTS.Framework.DomainDefinition
             Name = name;
             DomainOptions = domainOptions;
             Groups = new List<Group>();
-            DataTypes = new List<DataType>();
+            DataTypes = new List<IDataType>();
         }
 
         public string Name { get; set; }
 
         public DomainOptions DomainOptions { get; private set; }
 
-        public List<DataType> DataTypes { get; set; }
+        public List<IDataType> DataTypes { get; set; }
 
         public List<Group> Groups { get; set; }
 
@@ -63,13 +63,13 @@ namespace DTS.Framework.DomainDefinition
 
                             ret += String.Format(@" {0}", value.DataType.Name);
 
-                            if (value.Length > 0)
+                            if (value.MaxLength > 0)
                             {
-                                ret += String.Format(" {0}", value.Length);
+                                ret += String.Format(" {0}", value.MaxLength);
                             }
-                            else if (value.Length > 0)
+                            else if (value.MaxLength > 0)
                             {
-                                ret += String.Format(" {0}", value.Length);
+                                ret += String.Format(" {0}", value.MaxLength);
                             }
                         }
                     }
@@ -84,8 +84,11 @@ namespace DTS.Framework.DomainDefinition
             AddDataType(new BooleanDataType());
             AddDataType(new ByteDataType());
             AddDataType(new Int16DataType());
+            AddDataType(new Int16DataType("AutoInt16", true));
             AddDataType(new Int32DataType());
+            AddDataType(new Int32DataType("AutoInt32", true));
             AddDataType(new Int64DataType());
+            AddDataType(new Int64DataType("AutoInt64", true));
             AddDataType(new StringDataType());
             AddDataType(new DateDataType());
             AddDataType(new DateTimeDataType());
@@ -95,7 +98,7 @@ namespace DTS.Framework.DomainDefinition
             return this;
         }
 
-        private Domain AddDataType(DataType dataType)
+        public Domain AddDataType(IDataType dataType)
         {
             DataTypes.Add(dataType);
 

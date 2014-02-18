@@ -35,15 +35,23 @@ namespace DTS.Framework.CodeGen
             
             #line default
             #line hidden
-            this.Write("\tcreate schema ");
             
             #line 8 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(first ? "" : @"
+go"));
+            
+            #line default
+            #line hidden
+            this.Write("\r\ncreate schema [");
+            
+            #line 10 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(schema.Name));
             
             #line default
             #line hidden
+            this.Write("]");
             
-            #line 8 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
+            #line 10 "C:\Users\Dan\documents\visual studio 2013\Projects\DTS.Framework\DTS.Framework.CodeGen\Schemas.tt"
 
 });
             

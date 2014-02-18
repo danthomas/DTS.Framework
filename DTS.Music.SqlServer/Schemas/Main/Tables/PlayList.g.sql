@@ -1,8 +1,7 @@
-/*
-create table PlayList
+create table [Main].[Playlist]
 (
-PlayListId 
-, PlayList 
-, Track 
-, Order )
-*/
+[PlaylistId] smallint NOT NULL IDENTITY (1, 1)
+, [Name] varchar(50) NOT NULL
+, CONSTRAINT [PK_Playlist] PRIMARY KEY ([PlaylistId])
+, CONSTRAINT [AK_Playlist_Name] UNIQUE ([Name])
+)

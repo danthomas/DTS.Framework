@@ -1,1 +1,2 @@
-	create schema Main
+
+create schema [Main]

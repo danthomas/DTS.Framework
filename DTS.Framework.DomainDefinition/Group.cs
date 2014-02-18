@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DTS.Framework.DomainDefinition
 {
@@ -58,8 +59,8 @@ namespace DTS.Framework.DomainDefinition
         private void AddAutoIdProperty(Type type, Entity entity)
         {
             string name = String.Format(Domain.DomainOptions.AutoPropertyNameFormat, entity.Name);
-
-            entity.Value(name, type).SetIdentifier(name);
+            IDataType dataType = Domain.DataTypes.First(item => item.Type == type && item.IsAuto);
+            entity.Value(name, dataType).SetIdentifier(name);
         }
     }
 }
