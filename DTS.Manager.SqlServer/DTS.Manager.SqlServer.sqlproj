@@ -60,13 +60,18 @@
     <Folder Include="Schemas\Projects\Tables" />
     <Folder Include="Schemas\Projects" />
     <Folder Include="Schemas" />
-    <Folder Include="Schemas\Customers\Tables" />
-    <Folder Include="Schemas\Customers" />
+    <Folder Include="Schemas\Companies\Tables" />
+    <Folder Include="Schemas\Companies" />
+    <Folder Include="Schemas\Security\Tables" />
+    <Folder Include="Schemas\Security" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Projects\Tables\Project.g.sql" />
     <Build Include="Schemas\Schemas.g.sql" />
-    <Build Include="Schemas\Customers\Tables\Customer.g.sql" />
+    <Build Include="Schemas\Companies\Tables\Company.g.sql" />
+    <Build Include="Schemas\Security\Tables\Role.g.sql" />
+    <Build Include="Schemas\Security\Tables\User.g.sql" />
+    <Build Include="Schemas\Security\Tables\UserRole.g.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DTS.Manager.SqlServer.publish.xml" />

@@ -39,7 +39,9 @@ namespace DTS.Framework.DomainDefinition
 
         public Entity AddEntity(string name)
         {
-            return AddEntity(name, name + "s");
+            return AddEntity(name, name.EndsWith("y") 
+                ? name.Substring(0, name.Length - 1) + "ies" : 
+                name + "s");
         }
 
         public Entity AddEntity(string name, string plural)

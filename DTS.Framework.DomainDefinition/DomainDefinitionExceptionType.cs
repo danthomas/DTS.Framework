@@ -3,6 +3,7 @@
     public enum DomainDefinitionExceptionType
     {
         IdentifierAlreadySet,
-        PropertyNotFound
+        PropertyNotFound,
+        DefaultNotRecognised
     }
 }

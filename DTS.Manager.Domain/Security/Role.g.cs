@@ -1,13 +1,12 @@
 using System;
 
-namespace DTS.Manager.Domain.Projects
+namespace DTS.Manager.Domain.Security
 {
-	public class Project
+	public class Role
 	{		
-		public short ProjectId { get; set; }		
-		public string Code { get; set; }		
+		public short RoleId { get; set; }		
 		public string Name { get; set; }		
-		public bool IsActive { get; set; }		
+		public bool IsExternal { get; set; }		
 		public bool IsDeleted { get; set; }		
 		public DateTime CreatedDateTime { get; set; }		
 		public DateTime CreatedUser { get; set; }		

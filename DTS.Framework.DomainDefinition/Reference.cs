@@ -3,7 +3,7 @@
     public class Reference : Property
     {
         internal Reference(Entity entity, string name, Entity referencedEntity, bool isNullable)
-            : base(entity, name, isNullable, false)
+            : base(entity, name, isNullable, false, null)
         {
             ReferencedEntity = referencedEntity;
         }

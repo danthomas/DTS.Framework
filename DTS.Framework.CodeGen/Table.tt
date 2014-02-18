@@ -10,7 +10,7 @@ create table [<#= Entity.Group.Name #>].[<#= Entity.Name #>]
     this.ForEachProperty((property, first) =>
     {
 		#><#= first ? "" : @"
-, "#>[<#= property.Name #>] <#= property.SqlServerType #> <#= property.IsNullable ? "" : "NOT " #>NULL<#= property.IsAuto ? " IDENTITY (1, 1)" : "" #><#
+, "#>[<#= property.Name #>] <#= property.SqlServerType #> <#= property.IsNullable ? "" : "NOT " #>NULL<#= property.IsAuto ? " IDENTITY (1, 1)" : "" #><#= property.Default == null ? "" : " DEFAULT " + property.DefaultSqlServerString #><#
     });
 	#>
 

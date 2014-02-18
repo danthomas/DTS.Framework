@@ -1,5 +1,7 @@
 
-create schema [Customers]
+create schema [Security]
+go
+create schema [Companies]
 go
 create schema [Projects]
 go

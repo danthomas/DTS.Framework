@@ -31,22 +31,22 @@ namespace DTS.Framework.DomainDefinition
 
         public IEnumerable<Reference> References { get { return Properties.OfType<Reference>(); } }
 
-        public Entity Value<T>(string name, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
+        public Entity Value<T>(string name, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false, object @default = null)
         {
-            return Value(name, Group.Domain.DataTypes.First(item => item.Type == typeof(T)), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Type == typeof(T)), maxLength, minLength, prec, scale, nullable, isUnique, isAuto, @default);
         }
 
-        public Entity Value(string name, Type type, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
+        public Entity Value(string name, Type type, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false, object @default = null)
         {
-            return Value(name, Group.Domain.DataTypes.First(item => item.Type == type), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Type == type), maxLength, minLength, prec, scale, nullable, isUnique, isAuto, @default);
         }
 
-        public Entity Value(string name, string dataTypeName, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false)
+        public Entity Value(string name, string dataTypeName, short maxLength = 0, short minLength = 0, byte prec = 0, byte scale = 0, bool nullable = false, bool isUnique = false, bool isAuto = false, object @default = null)
         {
-            return Value(name, Group.Domain.DataTypes.First(item => item.Name == dataTypeName), maxLength, minLength, prec, scale, nullable, isUnique, isAuto);
+            return Value(name, Group.Domain.DataTypes.First(item => item.Name == dataTypeName), maxLength, minLength, prec, scale, nullable, isUnique, isAuto, @default);
         }
 
-        public Entity Value(string name, IDataType dataType, int maxLength = 0, int minLength = 0, byte prec = 0, byte scale = 0, bool isNullable = false, bool isUnique = false, bool isAuto = false)
+        public Entity Value(string name, IDataType dataType, int maxLength = 0, int minLength = 0, byte prec = 0, byte scale = 0, bool isNullable = false, bool isUnique = false, bool isAuto = false, object @default = null)
         {
             if (dataType.IsAuto)
             {
@@ -63,7 +63,7 @@ namespace DTS.Framework.DomainDefinition
                 minLength = dataType.MinLength;
             }
 
-            Value value = new Value(this, name, dataType, maxLength, minLength, prec, scale, isNullable, isAuto);
+            Value value = new Value(this, name, dataType, maxLength, minLength, prec, scale, isNullable, isAuto, @default);
 
             if (isUnique)
             {

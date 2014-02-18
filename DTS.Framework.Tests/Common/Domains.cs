@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using DTS.Framework.DomainDefinition;
 
 namespace DTS.Framework.Tests.Common
@@ -15,18 +16,81 @@ namespace DTS.Framework.Tests.Common
             .AddDefaultDataTypes()
             .AddDataType(new CodeDataType());
 
-            Group customers = domain.AddGroup("Customers");
+            Group security = domain.AddGroup("Security");
+            Group companies = domain.AddGroup("Companies");
             Group projects = domain.AddGroup("Projects");
             Group scheduling = domain.AddGroup("Scheduling");
             Group time = domain.AddGroup("Time");
 
-            customers.AddEntity("Customer")
+            Entity company = companies.AddEntity("Company")
                 .Value("Code", "Code", isUnique: true)
-                .Value<string>("Name");
+                .Value<bool>("IsInternal")
+                .Value<string>("Name", 30)
+                .Value<bool>("IsActive", @default: true)
+                .Value<bool>("IsDeleted")
+                .Value<DateTime>("CreatedDateTime", @default: DefaultValue.Now)
+                .Value<DateTime>("CreatedUser", @default: DefaultValue.CurrentUser)
+                .Value<DateTime>("UpdatedDateTime", nullable:true)
+                .Value<DateTime>("UpdatedUser", nullable: true);
 
-            projects.AddEntity("Project")
+            Entity user = security.AddEntity("User")
+                .Value<string>("Username", 20, 6, isUnique: true)
+                .Value<string>("Email", 200, 6, isUnique: true)
+                .Value<string>("FirstName", 20)
+                .Value<string>("MiddleName", 20)
+                .Value<string>("LastName", 30)
+                .Value<string>("PreferredName", 20)
+                .Value<bool>("IsActive", @default: true)
+                .Value<bool>("IsDeleted")
+                .Value<DateTime>("CreatedDateTime", @default: DefaultValue.Now)
+                .Value<DateTime>("CreatedUser", @default: DefaultValue.CurrentUser)
+                .Value<DateTime>("UpdatedDateTime", nullable:true)
+                .Value<DateTime>("UpdatedUser", nullable: true)
+                .Reference(company);
+
+            Entity role = security.AddEntity("Role")
+                .Value<string>("Name", 20, 4, isUnique: true)
+                .Value<bool>("IsExternal")
+                .Value<bool>("IsDeleted")
+                .Value<DateTime>("CreatedDateTime", @default: DefaultValue.Now)
+                .Value<DateTime>("CreatedUser", @default: DefaultValue.CurrentUser)
+                .Value<DateTime>("UpdatedDateTime", nullable: true)
+                .Value<DateTime>("UpdatedUser", nullable: true);
+
+            Entity userRole = security.AddEntity("UserRole")
+                .Reference(user)
+                .Reference(role);
+
+            Entity project = projects.AddEntity("Project")
                 .Value("Code", "Code", isUnique: true)
-                .Value<string>("Name");
+                .Value<string>("Name")
+                .Value<bool>("IsActive", @default: true)
+                .Value<bool>("IsDeleted")
+                .Value<DateTime>("CreatedDateTime", @default: DefaultValue.Now)
+                .Value<DateTime>("CreatedUser", @default: DefaultValue.CurrentUser)
+                .Value<DateTime>("UpdatedDateTime", nullable:true)
+                .Value<DateTime>("UpdatedUser", nullable: true)
+                .Reference(company);
+
+            Entity calendar = scheduling.AddEntity("Calendar")
+                .Value<string>("Name")
+                .Value<bool>("IsActive", @default: true)
+                .Value<bool>("IsDeleted")
+                .Value<DateTime>("CreatedDateTime", @default: DefaultValue.Now)
+                .Value<DateTime>("CreatedUser", @default: DefaultValue.CurrentUser)
+                .Value<DateTime>("UpdatedDateTime", nullable: true)
+                .Value<DateTime>("UpdatedUser", nullable: true);
+
+            Entity durationType = scheduling.AddEntity<byte>("DurationType")
+                .Value("Code", "Code", isUnique: true)
+                .Value<string>("Name", 20)
+                .Value<short>("ConversionFactor");
+
+            Entity entry = scheduling.AddEntity<int>("Entry")
+                .Reference(calendar)
+                .Reference(user, nullable: true)
+                .Value<DateTime>("DateTime")
+                .Value<short>("Duration");
 
 
             return domain;

@@ -1,11 +1,12 @@
 using System;
 
-namespace DTS.Manager.Domain.Projects
+namespace DTS.Manager.Domain.Companies
 {
-	public class Project
+	public class Company
 	{		
-		public short ProjectId { get; set; }		
+		public short CompanyId { get; set; }		
 		public string Code { get; set; }		
+		public bool IsInternal { get; set; }		
 		public string Name { get; set; }		
 		public bool IsActive { get; set; }		
 		public bool IsDeleted { get; set; }		

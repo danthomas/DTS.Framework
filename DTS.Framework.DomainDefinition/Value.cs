@@ -6,8 +6,8 @@ namespace DTS.Framework.DomainDefinition
     {
         private readonly IDataType _dataType;
 
-        internal Value(Entity entity, string name, IDataType dataType, int maxMaxLength, int minLength, byte prec, byte scale, bool isNullable, bool isAuto)
-            : base(entity, name, isNullable, isAuto)
+        internal Value(Entity entity, string name, IDataType dataType, int maxMaxLength, int minLength, byte prec, byte scale, bool isNullable, bool isAuto, object @default)
+            : base(entity, name, isNullable, isAuto, @default)
         {
             _dataType = dataType;
             MaxLength = maxMaxLength;
