@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultId.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DefaultValue.cs" />
     <Compile Include="Domain.cs" />

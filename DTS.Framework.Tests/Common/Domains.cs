@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using DTS.Framework.DomainDefinition;
 
 namespace DTS.Framework.Tests.Common
@@ -10,8 +9,8 @@ namespace DTS.Framework.Tests.Common
         {
             Domain domain = new Domain("DTS.Manager", new DomainOptions
             {
-                AutoIdProperty = true,
-                AutoIdPropertyType = typeof(Int16)
+                DefaultId = DefaultId.Auto,
+                DefaultIdType = typeof(Int16)
             })
             .AddDefaultDataTypes()
             .AddDataType(new CodeDataType());
@@ -81,7 +80,12 @@ namespace DTS.Framework.Tests.Common
                 .Value<DateTime>("UpdatedDateTime", nullable: true)
                 .Value<DateTime>("UpdatedUser", nullable: true);
 
-            Entity durationType = scheduling.AddEntity<byte>("DurationType")
+            Entity durationType = scheduling.AddEntity<byte>("DurationType", defaultId: DefaultId.Yes)
+                .Value("Code", "Code", isUnique: true)
+                .Value<string>("Name", 20)
+                .Value<short>("ConversionFactor");
+
+            Entity entryType = scheduling.AddEntity<byte>("EntryType", defaultId: DefaultId.Yes)
                 .Value("Code", "Code", isUnique: true)
                 .Value<string>("Name", 20)
                 .Value<short>("ConversionFactor");
@@ -90,6 +94,8 @@ namespace DTS.Framework.Tests.Common
                 .Reference(calendar)
                 .Reference(user, nullable: true)
                 .Value<DateTime>("DateTime")
+                .Reference(entryType)
+                .Reference(durationType)
                 .Value<short>("Duration");
 
 
@@ -100,8 +106,8 @@ namespace DTS.Framework.Tests.Common
         {
             Domain domain = new Domain("DTS.Music", new DomainOptions
             {
-                AutoIdProperty = true,
-                AutoIdPropertyType = typeof(Int16)
+                DefaultId = DefaultId.Auto,
+                DefaultIdType = typeof(Int16)
             }).AddDefaultDataTypes();
 
             Group group = domain.AddGroup("Main");

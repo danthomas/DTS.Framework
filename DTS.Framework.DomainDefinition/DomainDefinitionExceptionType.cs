@@ -4,6 +4,8 @@
     {
         IdentifierAlreadySet,
         PropertyNotFound,
-        DefaultNotRecognised
+        DefaultNotRecognised,
+        DataTypeNotFound,
+        IdentityValueNotSet
     }
 }

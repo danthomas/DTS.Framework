@@ -81,6 +81,11 @@ namespace DTS.Framework.DomainDefinition
 
         public Entity Reference(Entity entity, bool nullable = false)
         {
+            if (entity.IdentityValue == null)
+            {
+                throw new DomainDefinitionException(DomainDefinitionExceptionType.IdentityValueNotSet, "Identity Value not set on Entity {0}", entity.Name);
+            }
+
             return Reference(entity.IdentityValue.Name, entity, nullable);
         }
 

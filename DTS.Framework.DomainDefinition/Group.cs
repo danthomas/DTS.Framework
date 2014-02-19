@@ -21,36 +21,30 @@ namespace DTS.Framework.DomainDefinition
 
         public List<Entity> Entities { get; private set; }
 
-        public Entity AddEntity<T>(string name)
+        public Entity AddEntity<T>(string name, string plural = null, DefaultId defaultId = DefaultId.No)
         {
-            return AddEntity<T>(name, name + "s");
+            return AddEntity(typeof(T), name, plural, defaultId);
         }
 
-        public Entity AddEntity<T>(string name, string plural)
+        public Entity AddEntity(string name, string plural = null)
         {
-            Entity entity = new Entity(this, name, plural);
-
-            AddAutoIdProperty(typeof(T), entity);
-
-            Entities.Add(entity);
-
-            return entity;
+            return AddEntity(null, name, plural);
         }
 
-        public Entity AddEntity(string name)
+        private Entity AddEntity(Type type, string name, string plural = null, DefaultId? defaultId = null)
         {
-            return AddEntity(name, name.EndsWith("y") 
-                ? name.Substring(0, name.Length - 1) + "ies" : 
-                name + "s");
-        }
-
-        public Entity AddEntity(string name, string plural)
-        {
-            Entity entity = new Entity(this, name, plural);
-
-            if (Domain.DomainOptions.AutoIdProperty)
+            if (plural == null)
             {
-                AddAutoIdProperty(Domain.DomainOptions.AutoIdPropertyType, entity);
+                plural = GetPlural(name);
+            }
+
+            Entity entity = new Entity(this, name, plural);
+
+            defaultId = defaultId ?? Domain.DomainOptions.DefaultId;
+
+            if (defaultId != DefaultId.No)
+            {
+                AddDefaultIdProperty(defaultId.Value, type, entity);
             }
 
             Entities.Add(entity);
@@ -58,10 +52,27 @@ namespace DTS.Framework.DomainDefinition
             return entity;
         }
 
-        private void AddAutoIdProperty(Type type, Entity entity)
+        private static string GetPlural(string name)
         {
-            string name = String.Format(Domain.DomainOptions.AutoPropertyNameFormat, entity.Name);
-            IDataType dataType = Domain.DataTypes.First(item => item.Type == type && item.IsAuto);
+            return name.EndsWith("y")
+                ? name.Substring(0, name.Length - 1) + "ies"
+                : name + "s";
+        }
+
+        private void AddDefaultIdProperty(DefaultId defaultId, Type type, Entity entity)
+        {
+            string name = String.Format(Domain.DomainOptions.DefaultIdNameFormat, entity.Name);
+
+            type = type ?? Domain.DomainOptions.DefaultIdType;
+
+            IDataType dataType = Domain.DataTypes.FirstOrDefault(item => item.Type == type 
+                && item.IsAuto == (defaultId == DefaultId.Auto));
+
+            if (dataType == null)
+            {
+                throw new DomainDefinitionException(DomainDefinitionExceptionType.DataTypeNotFound, "Failed to find Default Id DataType for {0} on entity {1}", type.Name, entity.Name);
+            }
+
             entity.Value(name, dataType).SetIdentifier(name);
         }
     }
