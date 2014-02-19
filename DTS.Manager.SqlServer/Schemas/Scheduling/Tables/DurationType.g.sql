@@ -1,0 +1,10 @@
+create table [Scheduling].[DurationType]
+(
+[DurationTypeId] tinyint NOT NULL
+, [Code] varchar(5) NOT NULL
+, [Name] varchar(20) NOT NULL
+, [ConversionFactor] smallint NOT NULL
+, CONSTRAINT [PK_DurationType] PRIMARY KEY ([DurationTypeId])
+, CONSTRAINT [AK_DurationType_Code] UNIQUE ([Code])
+, CONSTRAINT [Code_MinLength] CHECK (LEN([Code]) > 3)
+)
