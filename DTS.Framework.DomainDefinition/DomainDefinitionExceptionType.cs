@@ -6,6 +6,8 @@
         PropertyNotFound,
         DefaultNotRecognised,
         DataTypeNotFound,
-        IdentityValueNotSet
+        IdentityValueNotSet,
+        TemplateCompileFailed,
+        TemplateFileNotFound
     }
 }

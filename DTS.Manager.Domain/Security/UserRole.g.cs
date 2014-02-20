@@ -1,3 +1,6 @@
+/*
+Generated file do not modify
+*/
 using System;
 
 namespace DTS.Manager.Domain.Security

@@ -1,0 +1,16 @@
+﻿/*
+Generated file do not modify
+*/
+<#
+ForEachGroup((group, first) =>
+{
+if (!first)
+{
+
+#>
+go
+<#
+}
+#>create schema [<#= group.Name #>]<#
+});
+#>

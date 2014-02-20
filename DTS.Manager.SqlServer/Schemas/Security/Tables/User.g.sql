@@ -1,23 +1,24 @@
 create table [Security].[User]
 (
-[UserId] smallint NOT NULL IDENTITY (1, 1)
-, [Username] varchar(20) NOT NULL
-, [Email] varchar(200) NOT NULL
-, [FirstName] varchar(20) NOT NULL
-, [MiddleName] varchar(20) NOT NULL
-, [LastName] varchar(30) NOT NULL
-, [PreferredName] varchar(20) NOT NULL
-, [IsActive] bit NOT NULL DEFAULT 1
-, [IsDeleted] bit NOT NULL
-, [CreatedDateTime] date NOT NULL DEFAULT getutcdate()
-, [CreatedUser] date NOT NULL DEFAULT suser_sname()
-, [UpdatedDateTime] date NULL
-, [UpdatedUser] date NULL
-, [CompanyId] smallint NOT NULL
-, CONSTRAINT [PK_User] PRIMARY KEY ([UserId])
-, CONSTRAINT [FK_User_CompanyId_Company] FOREIGN KEY ([CompanyId]) REFERENCES [Companies].[Company]([CompanyId])
-, CONSTRAINT [AK_User_Username] UNIQUE ([Username])
-, CONSTRAINT [AK_User_Email] UNIQUE ([Email])
-, CONSTRAINT [Username_MinLength] CHECK (LEN([Username]) > 6)
-, CONSTRAINT [Email_MinLength] CHECK (LEN([Email]) > 6)
+[UserId] smallint not null identity (1, 1)
+, [Username] varchar(20) not null
+, [Email] varchar(200) not null
+, [FirstName] varchar(20) not null
+, [MiddleName] varchar(20) not null
+, [LastName] varchar(30) not null
+, [PreferredName] varchar(20) not null
+, [IsActive] bit not null default 1
+, [IsDeleted] bit not null
+, [CompanyId] smallint not null
+, [CreatedDateTime] date not null default getutcdate()
+, [CreatedUser] date not null default suser_sname()
+, [UpdatedDateTime] date null
+, [UpdatedUser] date null
+, constraint [PrimaryKey_User] primary key ([UserId])
+, constraint [ForeignKey_User_CompanyId_Company] foreign key ([CompanyId]) references [Companies].[Company]([CompanyId])
+, constraint [Unique_User_Username] unique ([Username])
+, constraint [Unique_User_Email] unique ([Email])
+, constraint [Check_User_Username_MinLength] check (len([Username]) > 6)
+, constraint [Check_User_Email_MinLength] check (len([Email]) > 6)
+
 )

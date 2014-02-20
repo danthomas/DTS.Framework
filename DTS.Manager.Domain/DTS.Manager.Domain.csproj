@@ -42,6 +42,9 @@
     <Compile Include="Companies\Company.g.cs" />
     <Compile Include="Projects\Project.g.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduling\Calendar.g.cs" />
+    <Compile Include="Scheduling\Entry.g.cs" />
+    <Compile Include="Scheduling\EntryType.g.cs" />
     <Compile Include="Security\Role.g.cs" />
     <Compile Include="Security\User.g.cs" />
     <Compile Include="Security\UserRole.g.cs" />

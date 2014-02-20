@@ -1,17 +1,18 @@
 create table [Projects].[Project]
 (
-[ProjectId] smallint NOT NULL IDENTITY (1, 1)
-, [Code] varchar(5) NOT NULL
-, [Name] varchar(50) NOT NULL
-, [IsActive] bit NOT NULL DEFAULT 1
-, [IsDeleted] bit NOT NULL
-, [CreatedDateTime] date NOT NULL DEFAULT getutcdate()
-, [CreatedUser] date NOT NULL DEFAULT suser_sname()
-, [UpdatedDateTime] date NULL
-, [UpdatedUser] date NULL
-, [CompanyId] smallint NOT NULL
-, CONSTRAINT [PK_Project] PRIMARY KEY ([ProjectId])
-, CONSTRAINT [FK_Project_CompanyId_Company] FOREIGN KEY ([CompanyId]) REFERENCES [Companies].[Company]([CompanyId])
-, CONSTRAINT [AK_Project_Code] UNIQUE ([Code])
-, CONSTRAINT [Code_MinLength] CHECK (LEN([Code]) > 3)
+[ProjectId] smallint not null identity (1, 1)
+, [Code] varchar(5) not null
+, [Name] varchar(50) not null
+, [IsActive] bit not null default 1
+, [IsDeleted] bit not null
+, [CompanyId] smallint not null
+, [CreatedDateTime] date not null default getutcdate()
+, [CreatedUser] date not null default suser_sname()
+, [UpdatedDateTime] date null
+, [UpdatedUser] date null
+, constraint [PrimaryKey_Project] primary key ([ProjectId])
+, constraint [ForeignKey_Project_CompanyId_Company] foreign key ([CompanyId]) references [Companies].[Company]([CompanyId])
+, constraint [Unique_Project_Code] unique ([Code])
+, constraint [Check_Project_Code_MinLength] check (len([Code]) > 3)
+
 )

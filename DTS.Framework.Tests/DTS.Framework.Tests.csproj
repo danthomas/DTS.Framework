@@ -57,10 +57,10 @@
     <Compile Include="Common\CodeDataType.cs" />
     <Compile Include="Common\Domains.cs" />
     <Compile Include="DTS.Framework.CodeGen\GeneratorTests.cs" />
+    <Compile Include="DTS.Framework.CodeGen\Template.cs" />
     <Compile Include="DTS.Framework.DomainDefinition\DomainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DTS.Framework.CodeGen\DTS.Framework.CodeGen.csproj">
       <Project>{17C6B96E-659B-462A-A546-552269635187}</Project>

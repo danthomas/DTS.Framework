@@ -4,7 +4,7 @@ create table [Scheduling].[DurationType]
 , [Code] varchar(5) NOT NULL
 , [Name] varchar(20) NOT NULL
 , [ConversionFactor] smallint NOT NULL
-, CONSTRAINT [PK_DurationType] PRIMARY KEY ([DurationTypeId])
-, CONSTRAINT [AK_DurationType_Code] UNIQUE ([Code])
-, CONSTRAINT [Code_MinLength] CHECK (LEN([Code]) > 3)
+, CONSTRAINT [PRIMARYKEY_DurationType] PRIMARY KEY ([DurationTypeId])
+, CONSTRAINT [UNIQUE_DurationType_Code] UNIQUE ([Code])
+, CONSTRAINT [CHECK_DurationType_Code_MinLength] CHECK (LEN([Code]) > 3)
 )

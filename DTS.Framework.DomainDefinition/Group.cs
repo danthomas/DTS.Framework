@@ -21,7 +21,7 @@ namespace DTS.Framework.DomainDefinition
 
         public List<Entity> Entities { get; private set; }
 
-        public Entity AddEntity<T>(string name, string plural = null, DefaultId defaultId = DefaultId.No)
+        public Entity AddEntity<T>(string name, string plural = null, DefaultId? defaultId = null)
         {
             return AddEntity(typeof(T), name, plural, defaultId);
         }

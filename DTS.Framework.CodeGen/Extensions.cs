@@ -4,9 +4,9 @@ using DTS.Framework.DomainDefinition;
 
 namespace DTS.Framework.CodeGen
 {
-    internal static class Extensions
+    public static class Extensions
     {
-        public static void ForEachGroup(this IDomainTemplate domainTemplate, Action<Group, bool> action)
+        public static void ForEachGroup(this DomainTemplate domainTemplate, Action<Group, bool> action)
         {
             bool first = true;
             foreach (Group group in domainTemplate.Domain.Groups)
@@ -15,38 +15,17 @@ namespace DTS.Framework.CodeGen
                 first = false;
             }
         }
-
-        public static void ForEachValue(this IEntityTemplate entityTemplate, Action<Value, bool> action)
+        public static void ForEachEntity(this DomainTemplate domainTemplate, Action<Entity, bool> action)
         {
             bool first = true;
-            foreach (Value value in entityTemplate.Entity.Values)
+            foreach (Entity entity in domainTemplate.Domain.Groups.SelectMany(item => item.Entities))
             {
-                action(value, first);
+                action(entity, first);
                 first = false;
             }
         }
 
-        public static void ForEachValueWhere(this IEntityTemplate entityTemplate, Func<Value, bool> predicate, Action<Value, bool> action)
-        {
-            bool first = true;
-            foreach (Value value in entityTemplate.Entity.Values.Where(predicate))
-            {
-                action(value, first);
-                first = false;
-            }
-        }
-
-        public static void ForEachReference(this IEntityTemplate entityTemplate, Action<Reference, bool> action)
-        {
-            bool first = true;
-            foreach (Reference reference in entityTemplate.Entity.References)
-            {
-                action(reference, first);
-                first = false;
-            }
-        }
-
-        public static void ForEachProperty(this IEntityTemplate entityTemplate, Action<Property, bool> action)
+        public static void ForEachProperty(this EntityTemplate entityTemplate, Action<Property, bool> action)
         {
             bool first = true;
             foreach (Property property in entityTemplate.Entity.Properties)
@@ -56,7 +35,37 @@ namespace DTS.Framework.CodeGen
             }
         }
 
-        public static void ForEachUnique(this IEntityTemplate entityTemplate, Action<Unique, bool> action)
+        public static void ForEachValue(this EntityTemplate entityTemplate, Action<Value, bool> action)
+        {
+            bool first = true;
+            foreach (Value value in entityTemplate.Entity.Values)
+            {
+                action(value, first);
+                first = false;
+            }
+        }
+
+        public static void ForEachReference(this EntityTemplate entityTemplate, Action<Reference, bool> action)
+        {
+            bool first = true;
+            foreach (Reference reference in entityTemplate.Entity.References)
+            {
+                action(reference, first);
+                first = false;
+            }
+        }
+
+        public static void ForEachValueWhere(this EntityTemplate entityTemplate, Func<Value, bool> predicate, Action<Value, bool> action)
+        {
+            bool first = true;
+            foreach (Value value in entityTemplate.Entity.Values.Where(predicate))
+            {
+                action(value, first);
+                first = false;
+            }
+        }
+
+        public static void ForEachUnique(this EntityTemplate entityTemplate, Action<Unique, bool> action)
         {
             bool first = true;
             foreach (Unique unique in entityTemplate.Entity.Uniques)

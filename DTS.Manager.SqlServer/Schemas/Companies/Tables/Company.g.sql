@@ -1,16 +1,17 @@
 create table [Companies].[Company]
 (
-[CompanyId] smallint NOT NULL IDENTITY (1, 1)
-, [Code] varchar(5) NOT NULL
-, [IsInternal] bit NOT NULL
-, [Name] varchar(30) NOT NULL
-, [IsActive] bit NOT NULL DEFAULT 1
-, [IsDeleted] bit NOT NULL
-, [CreatedDateTime] date NOT NULL DEFAULT getutcdate()
-, [CreatedUser] date NOT NULL DEFAULT suser_sname()
-, [UpdatedDateTime] date NULL
-, [UpdatedUser] date NULL
-, CONSTRAINT [PK_Company] PRIMARY KEY ([CompanyId])
-, CONSTRAINT [AK_Company_Code] UNIQUE ([Code])
-, CONSTRAINT [Code_MinLength] CHECK (LEN([Code]) > 3)
+[CompanyId] smallint not null identity (1, 1)
+, [Code] varchar(5) not null
+, [IsInternal] bit not null
+, [Name] varchar(30) not null
+, [IsActive] bit not null default 1
+, [IsDeleted] bit not null
+, [CreatedDateTime] date not null default getutcdate()
+, [CreatedUser] date not null default suser_sname()
+, [UpdatedDateTime] date null
+, [UpdatedUser] date null
+, constraint [PrimaryKey_Company] primary key ([CompanyId])
+, constraint [Unique_Company_Code] unique ([Code])
+, constraint [Check_Company_Code_MinLength] check (len([Code]) > 3)
+
 )

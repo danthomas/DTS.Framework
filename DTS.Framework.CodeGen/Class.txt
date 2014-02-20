@@ -1,0 +1,17 @@
+﻿/*
+Generated file do not modify
+*/
+using System;
+
+namespace <#= Entity.Group.Domain.Name #>.Domain.<#= Entity.Group.Name #>
+{
+	public class <#= Entity.Name #>
+	{<#
+    ForEachValue((value, first) =>
+    {
+        #>		
+		public <#= value.DataType.CSharpName #> <#= value.Name #> { get; set; }<#
+    });
+	#>
+	}
+}

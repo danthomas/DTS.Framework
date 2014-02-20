@@ -1,12 +1,13 @@
 create table [Scheduling].[Calendar]
 (
-[CalendarId] smallint NOT NULL IDENTITY (1, 1)
-, [Name] varchar(50) NOT NULL
-, [IsActive] bit NOT NULL DEFAULT 1
-, [IsDeleted] bit NOT NULL
-, [CreatedDateTime] date NOT NULL DEFAULT getutcdate()
-, [CreatedUser] date NOT NULL DEFAULT suser_sname()
-, [UpdatedDateTime] date NULL
-, [UpdatedUser] date NULL
-, CONSTRAINT [PK_Calendar] PRIMARY KEY ([CalendarId])
+[CalendarId] smallint not null identity (1, 1)
+, [Name] varchar(50) not null
+, [IsActive] bit not null default 1
+, [IsDeleted] bit not null
+, [CreatedDateTime] date not null default getutcdate()
+, [CreatedUser] date not null default suser_sname()
+, [UpdatedDateTime] date null
+, [UpdatedUser] date null
+, constraint [PrimaryKey_Calendar] primary key ([CalendarId])
+
 )

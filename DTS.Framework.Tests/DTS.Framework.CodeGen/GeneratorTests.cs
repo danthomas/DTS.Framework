@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using DTS.Framework.CodeGen;
-using DTS.Framework.DomainDefinition;
 using DTS.Framework.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,31 +11,32 @@ namespace DTS.Framework.Tests.DTS.Framework.CodeGen
     public class GeneratorTests
     {
         [TestMethod]
-        public void GenerateManager()
+        public void TestMethod1()
         {
             string directoryPath = Directory.GetCurrentDirectory();
 
             directoryPath = directoryPath.Replace(@"DTS.Framework.Tests\bin\Debug", "");
 
-            Domain domain = Domains.CreateManagerDomain();
-
-            Generator generator = new Generator();
-
-            generator.Generate(directoryPath, domain);
+            //Generate(directoryPath, typeof(Class));
+            //Generate(directoryPath, typeof(Schemas));
+            Generate(directoryPath, typeof(Table));
         }
 
-        [TestMethod]
-        public void GenerateMusic()
+        private static void Generate(string directoryPath, Type type)
         {
-            string directoryPath = Directory.GetCurrentDirectory();
+            Generator generator = new Generator(type);
 
-            directoryPath = directoryPath.Replace(@"DTS.Framework.Tests\bin\Debug", "");
+            List<GenFile> genFiles = generator.Transform(Domains.CreateManagerDomain());
 
-            Domain domain = Domains.CreateMusicDomain();
+            foreach (GenFile genFile in genFiles)
+            {
+                string filePath = Path.Combine(directoryPath, genFile.RelativeFilePath);
 
-            Generator generator = new Generator();
-
-            generator.Generate(directoryPath, domain);
+                if (!File.Exists(filePath) || genFile.Text != File.ReadAllText(filePath))
+                {
+                    File.WriteAllText(filePath, genFile.Text);
+                }
+            }
         }
     }
 }

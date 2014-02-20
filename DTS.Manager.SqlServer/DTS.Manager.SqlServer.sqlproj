@@ -64,6 +64,8 @@
     <Folder Include="Schemas\Companies" />
     <Folder Include="Schemas\Security\Tables" />
     <Folder Include="Schemas\Security" />
+    <Folder Include="Schemas\Scheduling\Tables" />
+    <Folder Include="Schemas\Scheduling" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\Projects\Tables\Project.g.sql" />
@@ -72,6 +74,10 @@
     <Build Include="Schemas\Security\Tables\Role.g.sql" />
     <Build Include="Schemas\Security\Tables\User.g.sql" />
     <Build Include="Schemas\Security\Tables\UserRole.g.sql" />
+    <Build Include="Schemas\Scheduling\Tables\Calendar.g.sql" />
+    <Build Include="Schemas\Scheduling\Tables\DurationType.g.sql" />
+    <Build Include="Schemas\Scheduling\Tables\Entry.g.sql" />
+    <Build Include="Schemas\Scheduling\Tables\EntryType.g.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DTS.Manager.SqlServer.publish.xml" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Schema;
 
 namespace DTS.Framework.DomainDefinition
@@ -131,6 +132,17 @@ namespace DTS.Framework.DomainDefinition
             Uniques.Add(new Unique(properties));
 
             return this;
+        }
+
+        public void AddData(params object[] objects)
+        {
+            foreach (object @object in objects)
+            {
+                foreach (PropertyInfo propertyInfo in @object.GetType().GetProperties())
+                {
+                    
+                }
+            }
         }
     }
 }

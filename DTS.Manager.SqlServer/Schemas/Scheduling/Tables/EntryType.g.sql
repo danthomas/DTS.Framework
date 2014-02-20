@@ -1,10 +1,10 @@
 create table [Scheduling].[EntryType]
 (
-[EntryTypeId] tinyint NOT NULL
-, [Code] varchar(5) NOT NULL
-, [Name] varchar(20) NOT NULL
-, [ConversionFactor] smallint NOT NULL
-, CONSTRAINT [PK_EntryType] PRIMARY KEY ([EntryTypeId])
-, CONSTRAINT [AK_EntryType_Code] UNIQUE ([Code])
-, CONSTRAINT [Code_MinLength] CHECK (LEN([Code]) > 3)
+[EntryTypeId] smallint not null identity (1, 1)
+, [Code] varchar(5) not null
+, [Name] varchar(20) not null
+, constraint [PrimaryKey_EntryType] primary key ([EntryTypeId])
+, constraint [Unique_EntryType_Code] unique ([Code])
+, constraint [Check_EntryType_Code_MinLength] check (len([Code]) > 3)
+
 )
