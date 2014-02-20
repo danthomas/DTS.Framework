@@ -1,7 +1,6 @@
 ﻿using System;
-using DTS.Framework.DomainDefinition;
 
-namespace DTS.Framework.CodeGen
+namespace DTS.Framework.CodeGen.Templates
 {
     public abstract class Table : EntityTemplate
     {

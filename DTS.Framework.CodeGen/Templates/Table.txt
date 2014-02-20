@@ -1,0 +1,30 @@
+﻿create table [<#= Entity.Group.Name #>].[<#= Entity.Name #>]
+(
+<#
+    ForEachProperty((property, first) =>
+    {
+		#><#= first ? "" : @"
+, "#>[<#= property.Name #>] <#= property.SqlServerType #> <#= property.IsNullable ? "" : "not " #>null<#= property.IsAuto ? " identity (1, 1)" : "" #><#= property.Default == null ? "" : " default " + property.DefaultSqlServerString #><#
+    });
+	#>
+, constraint [PrimaryKey_<#= Entity.Name #>] primary key ([<#= Entity.IdentityValue.Name #>])<#
+    ForEachReference((reference, first) =>
+    {
+#>
+, constraint [ForeignKey_<#= Entity.Name #>_<#= reference.Name #>_<#= reference.ReferencedEntity.Name #>] foreign key ([<#= reference.Name #>]) references [<#= reference.ReferencedEntity.Group.Name #>].[<#= reference.ReferencedEntity.Name #>]([<#= reference.ReferencedEntity.IdentityValue.Name #>])<#        
+    });
+
+    ForEachUnique((unique, first) =>
+    {
+        #>
+, constraint [Unique_<#= Entity.Name #><# unique.ForEachUniqueProperty((property, firstProperty) => { #>_<#= property.Name #><# }); #>] unique (<# unique.ForEachUniqueProperty((property, firstProperty) => { #><#= firstProperty ? "" : ", " #>[<#= property.Name #>]<# }); #>)<#
+    });
+
+    ForEachValueWhere(item => item.MinLength > 0, (value, first) =>
+    {
+        #>
+, constraint [Check_<#= Entity.Name #>_<#= value.Name #>_MinLength] check (len([<#= value.Name #>]) > <#= value.MinLength #>)<#
+    });
+#>
+
+)

@@ -7,7 +7,7 @@ namespace DTS.Framework.CodeGen
     {
         public Domain Domain { get; set; }
 
-        public abstract string TransformText();
+        public abstract string Generate();
 
         public abstract string RelativeFilePath { get; }
 

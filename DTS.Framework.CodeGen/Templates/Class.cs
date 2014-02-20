@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DTS.Framework.CodeGen
+namespace DTS.Framework.CodeGen.Templates
 {
     public abstract class Class : EntityTemplate
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using DTS.Framework.CodeGen;
+using DTS.Framework.DomainDefinition;
 using DTS.Framework.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,24 +10,17 @@ namespace DTS.Framework.Tests.DTS.Framework.CodeGen
     public class GeneratorTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Generate()
         {
             string directoryPath = Directory.GetCurrentDirectory();
 
             directoryPath = directoryPath.Replace(@"DTS.Framework.Tests\bin\Debug", "");
 
-            //Generate(directoryPath, typeof(Class));
-            //Generate(directoryPath, typeof(Schemas));
-            Generate(directoryPath, typeof(Table));
-        }
+            Domain domain = Domains.CreateManagerDomain();
 
-        private static void Generate(string directoryPath, Type type)
-        {
-            Generator generator = new Generator(type);
+            Generator generator = new Generator();
 
-            List<GenFile> genFiles = generator.Transform(Domains.CreateManagerDomain());
-
-            foreach (GenFile genFile in genFiles)
+            foreach (GenerateResult genFile in generator.Generate(domain))
             {
                 string filePath = Path.Combine(directoryPath, genFile.RelativeFilePath);
 

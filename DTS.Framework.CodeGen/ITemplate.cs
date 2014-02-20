@@ -2,7 +2,8 @@
 {
     public interface ITemplate
     {
-        string TransformText();
+        string Generate();
+
         string RelativeFilePath { get; }
     }
 }

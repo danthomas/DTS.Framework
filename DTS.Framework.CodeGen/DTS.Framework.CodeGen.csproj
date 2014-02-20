@@ -39,18 +39,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class.cs" />
+    <Compile Include="BuildResult.cs" />
+    <Compile Include="Compiler.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="Templates\Class.cs" />
     <Compile Include="DomainTemplate.cs" />
     <Compile Include="EntityTemplate.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="GenFile.cs" />
+    <Compile Include="Builder.cs" />
+    <Compile Include="GenerateResult.cs" />
     <Compile Include="ITemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schemas.cs" />
-    <Compile Include="Table.cs">
+    <Compile Include="Templates\Class.g.cs" />
+    <Compile Include="Templates\Schemas.cs" />
+    <Compile Include="Templates\Schemas.g.cs" />
+    <Compile Include="Templates\Table.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Templates\Table.g.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -66,9 +72,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Class.txt" />
-    <Content Include="Schemas.txt" />
-    <Content Include="Table.txt" />
+    <Content Include="Templates\Class.txt" />
+    <Content Include="Templates\Schemas.txt" />
+    <Content Include="Templates\Table.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
