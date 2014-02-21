@@ -11,14 +11,19 @@ namespace DTS.Framework.CodeGen
         {
             List<GenerateResult> genFiles = new List<GenerateResult>();
 
-            foreach (Type type in GetType().Assembly.GetTypes().Where(item => item.IsClass
-                && !item.IsAbstract &&
-                item.GetInterfaces().Contains(typeof(ITemplate))))
+            foreach (Type type in GetTypes())
             {
                 genFiles.AddRange(Generate(domain, type));
             }
 
             return genFiles;
+        }
+
+        public IEnumerable<Type> GetTypes()
+        {
+            return GetType().Assembly.GetTypes().Where(item => item.IsClass
+                                                               && !item.IsAbstract &&
+                                                               item.GetInterfaces().Contains(typeof (ITemplate)));
         }
 
         public List<GenerateResult> Generate(Domain domain, Type type)

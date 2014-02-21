@@ -19,6 +19,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DTS.Manager.SqlServer", "DT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTS.Manager.Domain", "DTS.Manager.Domain\DTS.Manager.Domain.csproj", "{70A9D396-AF72-41E6-92E9-5B1BC7766535}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTS.Framework.Designer", "DTS.Framework.Designer\DTS.Framework.Designer.csproj", "{639677CE-9FF7-4FD8-A782-2E248DDAD549}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{70A9D396-AF72-41E6-92E9-5B1BC7766535}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70A9D396-AF72-41E6-92E9-5B1BC7766535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70A9D396-AF72-41E6-92E9-5B1BC7766535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639677CE-9FF7-4FD8-A782-2E248DDAD549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639677CE-9FF7-4FD8-A782-2E248DDAD549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639677CE-9FF7-4FD8-A782-2E248DDAD549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639677CE-9FF7-4FD8-A782-2E248DDAD549}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
