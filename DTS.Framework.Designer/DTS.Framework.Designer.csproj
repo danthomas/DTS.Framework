@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\Entity.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\TemplateType.cs" />
+    <Compile Include="ViewModels\ViewModelCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
